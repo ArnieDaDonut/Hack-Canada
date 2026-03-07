@@ -123,18 +123,34 @@
   flex-direction: column;
 }
 
+/* Landing Page Layout */
+.landing-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+@media (min-width: 1024px) {
+  .landing-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+}
+
 /* Upload Panel - Luxury Style */
 .upload-panel {
-  max-width: 900px;
-  margin: 2rem auto;
-  width: 100%;
-  padding: 3.5rem;
+  padding: 3rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .upload-zone {
   position: relative;
-  margin-bottom: 3.5rem;
+  margin-bottom: 3rem;
 }
 
 .file-input { display: none; }
@@ -143,7 +159,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 5rem 2rem;
+  padding: 4rem 2rem;
   border: 1px dashed rgba(212, 175, 55, 0.4);
   border-radius: var(--radius-lg);
   background: rgba(18, 18, 24, 0.3);
@@ -235,6 +251,143 @@
   color: var(--text-secondary);
   line-height: 1.6;
   font-weight: 300;
+}
+
+/* Interactive Showcase Slider */
+.showcase-panel {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to bottom right, rgba(18,18,24,0.8), rgba(10,10,15,0.95));
+}
+
+.showcase-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.showcase-header h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--accent-color);
+  margin: 0 0 0.5rem;
+}
+
+.showcase-header p {
+  color: var(--text-secondary);
+  margin: 0;
+  font-weight: 300;
+}
+
+.interactive-slider {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.slider-images {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.slider-img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slider-img.before {
+  filter: grayscale(20%) brightness(0.8);
+}
+
+.after-container {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  overflow: hidden;
+  /* width is controlled by React inline style */
+}
+
+.slider-img.after {
+  /* After image needs to stay full-width relative to the parent, not the container */
+  width: 100vw;
+  max-width: 100%;
+}
+/* We override the absolute .slider-img for the nested image so it matches parent */
+.after-container img {
+  width: calc(100% * (100 / var(--slider-pos, 100))); /* fallback handled in React */
+  min-width: 100%;
+}
+
+.slider-handle {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: var(--accent-color);
+  cursor: ew-resize;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.handle-button {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px; height: 36px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+  border: 2px solid white;
+}
+
+.reverse-icon {
+  transform: rotate(180deg);
+  margin-right: -4px;
+}
+
+.slider-input {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  opacity: 0;
+  cursor: ew-resize;
+  z-index: 20;
+}
+
+.slider-labels {
+  position: absolute;
+  bottom: 1rem; left: 1rem; right: 1rem;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.slider-label {
+  background: rgba(0,0,0,0.6);
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* Workspace Layout */
@@ -550,12 +703,16 @@
 
 .score-value.error {
   background: linear-gradient(180deg, #FFFFFF 0%, #9CA3AF 100%);
-  -webkit-background-clip: text; color: transparent;
+  -webkit-background-clip: text; 
+  background-clip: text;
+  color: transparent;
 }
 
 .score-value.success {
   background: linear-gradient(180deg, #FDE047 0%, #D4AF37 100%);
-  -webkit-background-clip: text; color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .score-value small {

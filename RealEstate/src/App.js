@@ -21,6 +21,8 @@ function App() {
   const [enhancedUrl, setEnhancedUrl] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [activeTab, setActiveTab] = useState('clutter');
+  const [enabledFeatures, setEnabledFeatures] = useState(false);
+  const [sliderPos, setSliderPos] = useState(50);
 
   const [prompts, setPrompts] = useState({
     bgReplace: 'minimalist bright modern living room',
@@ -236,49 +238,92 @@ function App() {
 
       <main className="main-content">
         {!imageState.publicId && !isProcessing && (
-          <motion.div 
-            className="upload-panel glass-panel"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="upload-zone">
-              <input 
-                type="file" 
-                id="file-upload" 
-                className="file-input" 
-                accept="image/*" 
-                onChange={handleImageUpload}
-                disabled={showConfig}
-              />
-              <label htmlFor="file-upload" className="upload-label">
-                <div className="upload-icon-wrapper">
-                  <Upload size={48} />
+          <div className="landing-grid">
+            <motion.div 
+              className="upload-panel glass-panel"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="upload-zone">
+                <input 
+                  type="file" 
+                  id="file-upload" 
+                  className="file-input" 
+                  accept="image/*" 
+                  onChange={handleImageUpload}
+                  disabled={showConfig}
+                />
+                <label htmlFor="file-upload" className="upload-label">
+                  <div className="upload-icon-wrapper">
+                    <Upload size={48} />
+                  </div>
+                  <h3>Upload Property Photo</h3>
+                  <p>Upload a messy, dated, or dark room to begin</p>
+                  <div className="supported-formats">Max resolution: 4000x4000 (JPG, PNG)</div>
+                </label>
+              </div>
+              
+              <div className="feature-cards">
+                <div className="feature-card">
+                  <Eraser size={24} />
+                  <h4>Intelligent Declutter</h4>
+                  <p>Erase clothes, boxes, and mess</p>
                 </div>
-                <h3>Upload Property Photo</h3>
-                <p>Upload a messy, dated, or dark room to begin</p>
-                <div className="supported-formats">Max resolution: 4000x4000 (JPG, PNG)</div>
-              </label>
-            </div>
-            
-            <div className="feature-cards">
-              <div className="feature-card">
-                <Eraser size={24} />
-                <h4>Intelligent Declutter</h4>
-                <p>Erase clothes, boxes, and mess</p>
+                <div className="feature-card">
+                  <ImageIcon size={24} />
+                  <h4>Virtual Staging</h4>
+                  <p>Refurnish empty living spaces</p>
+                </div>
+                <div className="feature-card">
+                  <TrendingUp size={24} />
+                  <h4>Boost Appeal</h4>
+                  <p>Increase listing clicks by 82%</p>
+                </div>
               </div>
-              <div className="feature-card">
-                <ImageIcon size={24} />
-                <h4>Virtual Staging</h4>
-                <p>Refurnish empty living spaces</p>
+            </motion.div>
+
+            <motion.div 
+              className="showcase-panel glass-panel"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <div className="showcase-header">
+                <h3>See the Magic</h3>
+                <p>Drag the slider to see how AI transforms this listing</p>
               </div>
-              <div className="feature-card">
-                <TrendingUp size={24} />
-                <h4>Boost Appeal</h4>
-                <p>Increase listing clicks by 82%</p>
+              <div className="interactive-slider">
+                <div className="slider-images">
+                  <img src="/images/hero_before.png" alt="Before AI" className="slider-img before" />
+                  <div 
+                    className="slider-img after-container" 
+                    style={{ width: `${sliderPos}%` }}
+                  >
+                    <img src="/images/hero_after.png" alt="After AI" className="slider-img after" />
+                  </div>
+                  <div className="slider-handle" style={{ left: `${sliderPos}%` }}>
+                    <div className="handle-line"></div>
+                    <div className="handle-button">
+                      <ArrowRight size={14} className="reverse-icon" />
+                      <ArrowRight size={14} />
+                    </div>
+                  </div>
+                  <input 
+                    type="range" 
+                    min="0" max="100" 
+                    value={sliderPos} 
+                    onChange={(e) => setSliderPos(e.target.value)}
+                    className="slider-input" 
+                  />
+                  <div className="slider-labels">
+                    <span className="slider-label left">Messy Original</span>
+                    <span className="slider-label right">AI Decluttered & Staged</span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         )}
 
         {(imageState.publicId || isProcessing) && (
