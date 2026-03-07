@@ -14,6 +14,17 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
+function MapResizer() {
+  const map = useMap();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      map.invalidateSize();
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [map]);
+  return null;
+}
+
 function App() {
   const [config, setConfig] = useState({
     cloudName: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME || localStorage.getItem('estate_cloud_name') || '',
@@ -394,9 +405,13 @@ function App() {
                 preferCanvas={true}
                 style={{ height: "100%", width: "100%", zIndex: 1 }}
               >
+                <MapResizer />
                 <TileLayer
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://carto.com/attributions">CARTO</a>'
+                  url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+                  keepBuffer={4}
+                  updateWhenIdle={true}
+                  updateWhenZooming={false}
                 />
                 {chicagoListings.map(listing => {
                   if (!listing.map || !listing.map.latitude || !listing.map.longitude) return null;
@@ -405,8 +420,7 @@ function App() {
                       key={listing.mlsNumber} 
                       position={[listing.map.latitude, listing.map.longitude]}
                       eventHandlers={{
-                        click: (e) => {
-                          L.DomEvent.stopPropagation(e);
+                        click: () => {
                           setSelectedListing(listing);
                         },
                       }}
