@@ -1,0 +1,483 @@
+{
+  "mlsNumber": "MRD10721637",
+  "resource": "Property:2505",
+  "status": "A",
+  "class": "ResidentialProperty",
+  "type": "Sale",
+  "listPrice": 92000,
+  "listDate": "2026-02-01T00:00:00.000-00:00",
+  "lastStatus": "New",
+  "soldPrice": null,
+  "soldDate": null,
+  "originalPrice": 112000,
+  "assignment": null,
+  "address": {
+    "area": "Cook",
+    "city": "Chicago",
+    "country": null,
+    "district": null,
+    "majorIntersection": null,
+    "neighborhood": null,
+    "streetDirection": null,
+    "streetName": "Hermitage",
+    "streetNumber": "6812",
+    "streetSuffix": "Avenue",
+    "unitNumber": null,
+    "zip": "60636",
+    "state": "IL",
+    "communityCode": null,
+    "streetDirectionPrefix": "S",
+    "addressKey": "6812hermitageavenuechicago"
+  },
+  "map": {
+    "latitude": 41.769856,
+    "longitude": -87.66782049999999,
+    "point": "POINT (-87.66782049999999 41.769856)",
+    "placeId": "ChIJ1aJFKK4vDogRLAKdf-05C38"
+  },
+  "permissions": {
+    "displayAddressOnInternet": "Y",
+    "displayPublic": "Y",
+    "displayInternetEntireListing": "Y"
+  },
+  "images": [
+    "sample/IMG-MRD10721637_0.jpg",
+    "sample/IMG-MRD10721637_1.jpg",
+    "sample/IMG-MRD10721637_2.jpg",
+    "sample/IMG-MRD10721637_3.jpg",
+    "sample/IMG-MRD10721637_4.jpg",
+    "sample/IMG-MRD10721637_5.jpg",
+    "sample/IMG-MRD10721637_6.jpg",
+    "sample/IMG-MRD10721637_7.jpg",
+    "sample/IMG-MRD10721637_8.jpg",
+    "sample/IMG-MRD10721637_9.jpg",
+    "sample/IMG-MRD10721637_10.jpg",
+    "sample/IMG-MRD10721637_11.jpg",
+    "sample/IMG-MRD10721637_12.jpg",
+    "sample/IMG-MRD10721637_13.jpg",
+    "sample/IMG-MRD10721637_14.jpg",
+    "sample/IMG-MRD10721637_15.jpg",
+    "sample/IMG-MRD10721637_16.jpg",
+    "sample/IMG-MRD10721637_17.jpg",
+    "sample/IMG-MRD10721637_18.jpg",
+    "sample/IMG-MRD10721637_19.jpg",
+    "sample/IMG-MRD10721637_20.jpg",
+    "sample/IMG-MRD10721637_21.jpg",
+    "sample/IMG-MRD10721637_22.jpg",
+    "sample/IMG-MRD10721637_23.jpg",
+    "sample/IMG-MRD10721637_24.jpg",
+    "sample/IMG-MRD10721637_25.jpg",
+    "sample/IMG-MRD10721637_26.jpg",
+    "sample/IMG-MRD10721637_27.jpg"
+  ],
+  "photoCount": 28,
+  "details": {
+    "airConditioning": null,
+    "basement1": "Full",
+    "basement2": null,
+    "centralVac": null,
+    "den": null,
+    "description": "**** SAMPLE DATA **** Amazing opportunity to own a two unit building at an affordable price. Rent out one unit and live RENT FREE! Great for owners, investors, or an addition to your portfolio! Property has many recent updates including floors, paint, bathroom, and kitchen. LOW affordable taxes!! Set you exclusive showing today! **** SAMPLE DATA ****",
+    "elevator": null,
+    "exteriorConstruction1": null,
+    "exteriorConstruction2": null,
+    "extras": null,
+    "furnished": null,
+    "garage": null,
+    "heating": "Natural Gas, Forced Air",
+    "numBathrooms": 2,
+    "numBathroomsPlus": null,
+    "numBedrooms": 5,
+    "numBedroomsPlus": null,
+    "numFireplaces": null,
+    "numGarageSpaces": null,
+    "numParkingSpaces": null,
+    "numRooms": null,
+    "numRoomsPlus": null,
+    "patio": null,
+    "propertyType": "Residential Income",
+    "sqft": null,
+    "style": "Other",
+    "swimmingPool": null,
+    "virtualTourUrl": null,
+    "yearBuilt": "1915",
+    "landAccessType": null,
+    "landSewer": null,
+    "viewType": null,
+    "zoningDescription": null,
+    "analyticsClick": null,
+    "moreInformationLink": null,
+    "alternateURLVideoLink": null,
+    "flooringType": null,
+    "foundationType": null,
+    "landscapeFeatures": null,
+    "fireProtection": null,
+    "roofMaterial": "Asphalt",
+    "farmType": null,
+    "zoningType": null,
+    "businessType": null,
+    "businessSubType": null,
+    "landDisposition": null,
+    "storageType": null,
+    "constructionStyleSplitLevel": null,
+    "constructionStatus": null,
+    "loadingType": null,
+    "ceilingType": null,
+    "liveStreamEventURL": null,
+    "energuideRating": null,
+    "amperage": null,
+    "sewer": "Public Sewer",
+    "familyRoom": null,
+    "zoning": "MULTI",
+    "driveway": null,
+    "leaseTerms": null,
+    "centralAirConditioning": null,
+    "certificationLevel": null,
+    "energyCertification": null,
+    "parkCostMonthly": null,
+    "commonElementsIncluded": null,
+    "greenPropertyInformationStatement": null,
+    "handicappedEquipped": null,
+    "laundryLevel": null,
+    "numKitchens": null,
+    "numKitchensPlus": null,
+    "sqftRange": null,
+    "numDrivewaySpaces": null,
+    "HOAFee": null,
+    "HOAFee2": null,
+    "HOAFee3": null,
+    "waterSource": "Public",
+    "livingAreaMeasurement": null,
+    "waterfront": null,
+    "bathrooms": [],
+    "numBathroomsHalf": null
+  },
+  "daysOnMarket": 136,
+  "occupancy": null,
+  "updatedOn": "2021-12-09T16:44:26.000-00:00",
+  "coopCompensation": null,
+  "lot": {
+    "acres": 0.07,
+    "depth": null,
+    "irregular": null,
+    "legalDescription": null,
+    "measurement": null,
+    "width": null,
+    "size": null,
+    "source": null,
+    "dimensionsSource": null,
+    "dimensions": "25X125",
+    "squareFeet": null,
+    "features": null,
+    "taxLot": null
+  },
+  "nearby": {
+    "amenities": []
+  },
+  "office": {
+    "brokerageName": "RE/MAX LOYALTY"
+  },
+  "openHouse": [],
+  "rooms": [],
+  "taxes": {
+    "annualAmount": null,
+    "assessmentYear": "2018"
+  },
+  "timestamps": {
+    "idxUpdated": "2021-12-09T16:44:26.000-00:00",
+    "listingUpdated": "2021-12-09T16:44:26.000-00:00",
+    "photosUpdated": "2020-11-13T19:30:42.000-00:00",
+    "conditionalExpiryDate": null,
+    "terminatedDate": null,
+    "suspendedDate": null,
+    "listingEntryDate": null,
+    "closedDate": null,
+    "unavailableDate": null,
+    "expiryDate": null,
+    "extensionEntryDate": null,
+    "possessionDate": null,
+    "repliersUpdatedOn": "2026-02-10T02:55:07.622Z",
+    "imageInsightsUpdatedOn": "2020-11-13T19:30:42.000-00:00"
+  },
+  "agents": [
+    {
+      "agentId": "MRD881340",
+      "boardAgentId": "MRD881340",
+      "officeId": "MRD85895",
+      "updatedOn": "2021-01-22 20:42:46",
+      "name": "Leyla Jimenez",
+      "board": null,
+      "boardOfficeId": "MRD85895",
+      "position": "REALTOR Salesperson",
+      "email": "REDACTED",
+      "phones": [
+        "773-510-8813",
+        "773-772-6969"
+      ],
+      "social": [],
+      "website": null,
+      "photo": {
+        "small": null,
+        "large": null,
+        "updatedOn": null
+      },
+      "brokerage": {
+        "name": "RE/MAX LOYALTY",
+        "address": {
+          "address1": "3551-53 W Fullerton",
+          "address2": null,
+          "city": "Chicago",
+          "state": "IL",
+          "postal": "60647",
+          "country": null
+        }
+      }
+    }
+  ],
+  "estimate": {
+    "date": "2025-08-06T21:00:00.030Z",
+    "high": 269106.7854758669,
+    "low": 136634.40202413307,
+    "confidence": 0.326494789124,
+    "history": {
+      "mth": {
+        "2025-05": {
+          "value": 207836.59375
+        },
+        "2024-04": {
+          "value": 214209.078125
+        },
+        "2025-04": {
+          "value": 206547.015625
+        },
+        "2024-03": {
+          "value": 211487.09375
+        },
+        "2025-07": {
+          "value": 201939.578125
+        },
+        "2024-06": {
+          "value": 215783.375
+        },
+        "2025-06": {
+          "value": 207630.96875
+        },
+        "2024-05": {
+          "value": 215404.328125
+        },
+        "2024-08": {
+          "value": 210533.34375
+        },
+        "2025-08": {
+          "value": 202870.59375
+        },
+        "2024-07": {
+          "value": 214526.046875
+        },
+        "2024-09": {
+          "value": 208869.28125
+        },
+        "2023-09": {
+          "value": 201837.90625
+        },
+        "2025-01": {
+          "value": 201619.9375
+        },
+        "2024-11": {
+          "value": 204493.859375
+        },
+        "2024-10": {
+          "value": 208989.359375
+        },
+        "2023-10": {
+          "value": 198521.46875
+        },
+        "2025-03": {
+          "value": 206090.328125
+        },
+        "2024-02": {
+          "value": 203938.78125
+        },
+        "2023-11": {
+          "value": 197406.796875
+        },
+        "2025-02": {
+          "value": 204365.8125
+        },
+        "2024-12": {
+          "value": 202767.0625
+        },
+        "2024-01": {
+          "value": 200063.828125
+        },
+        "2023-12": {
+          "value": 199572.09375
+        }
+      }
+    },
+    "value": 202870.59375
+  },
+  "imageInsights": {
+    "summary": {
+      "quality": {
+        "qualitative": {
+          "features": {
+            "livingRoom": "average",
+            "kitchen": "below average",
+            "backOfStructure": "below average",
+            "bedroom": "average",
+            "bathroom": "below average"
+          },
+          "overall": "below average"
+        },
+        "quantitative": {
+          "features": {
+            "livingRoom": 3.2340900898,
+            "kitchen": 2.9794077873,
+            "backOfStructure": 2.8078761101,
+            "bedroom": 3.3929636478,
+            "bathroom": 2.8063464165
+          },
+          "overall": 2.9794077873
+        }
+      }
+    },
+    "images": [
+      {
+        "image": "sample/IMG-MRD10721637_3.jpg",
+        "classification": {
+          "imageOf": "Living Room",
+          "prediction": 0.9185663462
+        },
+        "quality": {
+          "qualitative": "below average",
+          "quantitative": 2.3668265343
+        }
+      },
+      {
+        "image": "sample/IMG-MRD10721637_5.jpg",
+        "classification": {
+          "imageOf": "Living Room",
+          "prediction": 0.9941547513
+        },
+        "quality": {
+          "qualitative": "average",
+          "quantitative": 3.2340900898
+        }
+      },
+      {
+        "image": "sample/IMG-MRD10721637_7.jpg",
+        "classification": {
+          "imageOf": "Bedroom",
+          "prediction": 0.9962433577
+        },
+        "quality": {
+          "qualitative": "below average",
+          "quantitative": 2.7446854115
+        }
+      },
+      {
+        "image": "sample/IMG-MRD10721637_9.jpg",
+        "classification": {
+          "imageOf": "Kitchen",
+          "prediction": 0.968025744
+        },
+        "quality": {
+          "qualitative": "below average",
+          "quantitative": 2.9794077873
+        }
+      },
+      {
+        "image": "sample/IMG-MRD10721637_10.jpg",
+        "classification": {
+          "imageOf": "Kitchen",
+          "prediction": 0.9383006692
+        },
+        "quality": {
+          "qualitative": "below average",
+          "quantitative": 2.5381202698
+        }
+      },
+      {
+        "image": "sample/IMG-MRD10721637_11.jpg",
+        "classification": {
+          "imageOf": "Bathroom",
+          "prediction": 0.9998762608
+        },
+        "quality": {
+          "qualitative": "below average",
+          "quantitative": 2.0974779129
+        }
+      },
+      {
+        "image": "sample/IMG-MRD10721637_12.jpg",
+        "classification": {
+          "imageOf": "Bathroom",
+          "prediction": 0.9999667406
+        },
+        "quality": {
+          "qualitative": "below average",
+          "quantitative": 2.8063464165
+        }
+      },
+      {
+        "image": "sample/IMG-MRD10721637_15.jpg",
+        "classification": {
+          "imageOf": "Kitchen",
+          "prediction": 0.9313830137
+        },
+        "quality": {
+          "qualitative": "below average",
+          "quantitative": 2.6685934067
+        }
+      },
+      {
+        "image": "sample/IMG-MRD10721637_21.jpg",
+        "classification": {
+          "imageOf": "Bedroom",
+          "prediction": 0.9799941778
+        },
+        "quality": {
+          "qualitative": "average",
+          "quantitative": 3.3929636478
+        }
+      },
+      {
+        "image": "sample/IMG-MRD10721637_25.jpg",
+        "classification": {
+          "imageOf": "Back of Structure",
+          "prediction": 0.9909366965
+        },
+        "quality": {
+          "qualitative": "below average",
+          "quantitative": 2.5969371796
+        }
+      },
+      {
+        "image": "sample/IMG-MRD10721637_26.jpg",
+        "classification": {
+          "imageOf": "Back of Structure",
+          "prediction": 0.9961212277
+        },
+        "quality": {
+          "qualitative": "below average",
+          "quantitative": 2.1399745941
+        }
+      },
+      {
+        "image": "sample/IMG-MRD10721637_27.jpg",
+        "classification": {
+          "imageOf": "Back of Structure",
+          "prediction": 0.9860354662
+        },
+        "quality": {
+          "qualitative": "below average",
+          "quantitative": 2.8078761101
+        }
+      }
+    ]
+  },
+  "boardId": 110,
+  "simpleDaysOnMarket": 35,
+  "standardStatus": "Active"
+}

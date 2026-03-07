@@ -1,7 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Upload, Home, Image as ImageIcon, Wand2, ArrowRight, Settings, Eraser, Crop, Zap, CheckCircle2, TrendingUp, Tags, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Upload, Home, Image as ImageIcon, Wand2, ArrowRight, Settings, Eraser, Crop, Zap, CheckCircle2, TrendingUp, Tags, ChevronLeft, ChevronRight, MapPin, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import './App.css';
+
+// Fix for default Leaflet icon paths in React
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
 
 function App() {
   const [config, setConfig] = useState({
@@ -10,22 +21,25 @@ function App() {
   });
   
   const [showConfig, setShowConfig] = useState(!config.cloudName || !config.uploadPreset);
-  const [imageState, setImageState] = useState({
-    publicId: null,
-    originalUrl: null,
-    format: null,
-    tags: [],
-    originalScore: null
+  const [imageState, setImageState] = useState(() => {
+    const saved = sessionStorage.getItem('estate_imageState');
+    return saved ? JSON.parse(saved) : {
+      publicId: null,
+      originalUrl: null,
+      format: null,
+      tags: [],
+      originalScore: null
+    };
   });
   
-  const [enhancedUrl, setEnhancedUrl] = useState(null);
+  const [enhancedUrl, setEnhancedUrl] = useState(() => sessionStorage.getItem('estate_enhancedUrl') || null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [activeTab, setActiveTab] = useState('clutter');
+  const [activeTab, setActiveTab] = useState(() => sessionStorage.getItem('estate_activeTab') || 'clutter');
   const [enabledFeatures, setEnabledFeatures] = useState(false);
   const [sliderPos, setSliderPos] = useState(50);
   const [landingSliderPos, setLandingSliderPos] = useState(50);
 
-  const [view, setView] = useState('landing');
+  const [view, setView] = useState(() => sessionStorage.getItem('estate_view') || 'landing');
   const [listingStep, setListingStep] = useState(1);
   const [listingImages, setListingImages] = useState({
     kitchen: [],
@@ -45,12 +59,57 @@ function App() {
   const [generatedListing, setGeneratedListing] = useState(null);
   const [showEmailModal, setShowEmailModal] = useState(false);
 
-  const [prompts, setPrompts] = useState({
-    bgReplace: 'minimalist bright modern living room',
-    redecorateFrom: 'furniture',
-    redecorateTo: 'modern minimalist furniture',
-    removeText: ''
+  const [prompts, setPrompts] = useState(() => {
+    const saved = sessionStorage.getItem('estate_prompts');
+    return saved ? JSON.parse(saved) : {
+      bgReplace: 'minimalist bright modern living room',
+      redecorateFrom: 'furniture',
+      redecorateTo: 'modern minimalist furniture',
+      removeText: ''
+    };
   });
+
+  const [chicagoListings, setChicagoListings] = useState([]);
+  const [selectedListing, setSelectedListing] = useState(null);
+  const [loadingMap, setLoadingMap] = useState(false);
+
+  useEffect(() => {
+    sessionStorage.setItem('estate_imageState', JSON.stringify(imageState));
+  }, [imageState]);
+
+  useEffect(() => {
+    if (enhancedUrl) sessionStorage.setItem('estate_enhancedUrl', enhancedUrl);
+    else sessionStorage.removeItem('estate_enhancedUrl');
+  }, [enhancedUrl]);
+
+  useEffect(() => { sessionStorage.setItem('estate_view', view); }, [view]);
+  useEffect(() => { sessionStorage.setItem('estate_activeTab', activeTab); }, [activeTab]);
+  useEffect(() => { sessionStorage.setItem('estate_prompts', JSON.stringify(prompts)); }, [prompts]);
+
+  const loadChicagoListings = async () => {
+    if (chicagoListings.length > 0) return;
+    setLoadingMap(true);
+    try {
+      const res = await fetch('https://api.repliers.io/listings?city=Chicago&resultsPerPage=40', {
+        headers: {
+          'REPLIERS-API-KEY': 'eB3sU7U2IfIcuNsvK68zX865OSmhxv'
+        }
+      });
+      const data = await res.json();
+      setChicagoListings(data.listings || []);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to load listings from Repliers API');
+    } finally {
+      setLoadingMap(false);
+    }
+  };
+
+  useEffect(() => {
+    if (view === 'chicago-map') {
+      loadChicagoListings();
+    }
+  }, [view]);
 
   const saveConfig = (e) => {
     e.preventDefault();
@@ -59,11 +118,26 @@ function App() {
     setShowConfig(false);
   };
 
-  const uploadToCloudinary = async (file) => {
+  const uploadToCloudinary = async (fileOrBlob) => {
     setIsProcessing(true);
     
+    let fileToUpload = fileOrBlob;
+    
+    // If it's a URL (from the map), we fetch it and convert it to a Blob first for the upload
+    if (typeof fileOrBlob === 'string') {
+      try {
+        const response = await fetch(fileOrBlob);
+        fileToUpload = await response.blob();
+      } catch (err) {
+        console.error("Error fetching map image", err);
+        setIsProcessing(false);
+        alert("Failed to prepare image for enhancement.");
+        return;
+      }
+    }
+
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', fileToUpload);
     formData.append('upload_preset', config.uploadPreset);
 
     try {
@@ -117,7 +191,10 @@ function App() {
       return;
     }
 
+    setView('editor');
+    window.scrollTo(0, 0);
     uploadToCloudinary(file);
+    e.target.value = '';
   };
 
   const startListing = () => {
@@ -204,6 +281,7 @@ function App() {
     setImageState({ publicId: null, originalUrl: null, format: null, tags: [], originalScore: null });
     setEnhancedUrl(null);
     setActiveTab('clutter');
+    setView('landing');
   };
 
   const handleNavClick = (e, sectionId) => {
@@ -211,6 +289,7 @@ function App() {
     setImageState({ publicId: null, originalUrl: null, format: null, tags: [], originalScore: null });
     setEnhancedUrl(null);
     window.location.hash = sectionId;
+    setView('landing');
   };
 
   const addTagToRemove = (tag) => {
@@ -280,6 +359,7 @@ function App() {
 <nav className="hidden md:flex items-center gap-10">
 <a className="text-text-main/80 text-sm font-semibold hover:text-primary transition-colors" href="#features" onClick={(e) => handleNavClick(e, 'features')}>Features</a>
 <a className="text-text-main/80 text-sm font-semibold hover:text-primary transition-colors" href="#process" onClick={(e) => handleNavClick(e, 'process')}>Process</a>
+<button className={`text-text-main/80 text-sm font-semibold hover:text-primary transition-colors ${view === 'chicago-map' ? 'text-primary' : ''}`} onClick={() => setView('chicago-map')}>Chicago Map <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full ml-1 uppercase tracking-widest">New</span></button>
 <a className="text-text-main/80 text-sm font-semibold hover:text-primary transition-colors" href="#testimonials" onClick={(e) => handleNavClick(e, 'testimonials')}>Testimonials</a>
 </nav>
 <div className="flex items-center gap-4">
@@ -298,6 +378,112 @@ function App() {
 </header>
 
       <main>
+        {view === 'chicago-map' && (
+          <div className="h-[calc(100vh-80px)] w-full flex relative overflow-hidden bg-neutral-soft">
+            <div className="flex-1 h-full z-0 relative">
+              {loadingMap && (
+                <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/50 backdrop-blur-sm">
+                  <div className="spinner" style={{width: 50, height: 50, borderWidth: 5}}></div>
+                </div>
+              )}
+              <MapContainer 
+                center={[41.8781, -87.6298]} 
+                zoom={11} 
+                minZoom={10}
+                maxZoom={18}
+                preferCanvas={true}
+                style={{ height: "100%", width: "100%", zIndex: 1 }}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {chicagoListings.map(listing => {
+                  if (!listing.map || !listing.map.latitude || !listing.map.longitude) return null;
+                  return (
+                    <Marker 
+                      key={listing.mlsNumber} 
+                      position={[listing.map.latitude, listing.map.longitude]}
+                      eventHandlers={{
+                        click: (e) => {
+                          L.DomEvent.stopPropagation(e);
+                          setSelectedListing(listing);
+                        },
+                      }}
+                    >
+                    </Marker>
+                  );
+                })}
+              </MapContainer>
+            </div>
+
+            {/* Listing Details Drawer */}
+            <AnimatePresence>
+              {selectedListing && (
+                <motion.div 
+                  initial={{ x: '100%' }}
+                  animate={{ x: 0 }}
+                  exit={{ x: '100%' }}
+                  transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                  style={{ zIndex: 9999 }}
+                  className="w-full max-w-md bg-white h-full border-l border-neutral-warm shadow-2xl flex flex-col absolute right-0 top-0 overflow-hidden"
+                >
+                  <div className="p-4 border-b border-neutral-warm flex justify-between items-center bg-white sticky top-0 z-20">
+                    <div>
+                      <h3 className="font-black text-lg truncate w-64">{selectedListing.address?.streetNumber} {selectedListing.address?.streetName} {selectedListing.address?.streetSuffix}</h3>
+                      <p className="text-sm font-bold text-primary">${selectedListing.listPrice?.toLocaleString()}</p>
+                    </div>
+                    <button onClick={() => setSelectedListing(null)} className="p-2 hover:bg-neutral-soft rounded-full transition-colors">
+                      <X size={20} />
+                    </button>
+                  </div>
+                  
+                  <div className="flex-1 overflow-y-auto p-4 bg-neutral-soft/50 space-y-6">
+                    <div className="flex gap-4 text-sm font-bold text-text-main/70">
+                      <span className="flex items-center gap-1"><span className="material-symbols-outlined text-base">bed</span> {selectedListing.details?.numBedrooms || 0} Beds</span>
+                      <span className="flex items-center gap-1"><span className="material-symbols-outlined text-base">shower</span> {selectedListing.details?.numBathrooms || 0} Baths</span>
+                      <span className="flex items-center gap-1"><span className="material-symbols-outlined text-base">straighten</span> {selectedListing.details?.sqft || 'N/A'} Sqft</span>
+                    </div>
+
+                    <div>
+                      <h4 className="font-bold mb-3 uppercase tracking-widest text-[10px] text-text-main/50">Property Details</h4>
+                      <p className="text-sm text-text-main/80 leading-relaxed bg-white p-4 rounded-xl shadow-sm border border-neutral-warm">
+                        {selectedListing.details?.description || 'No description available.'}
+                      </p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-bold mb-3 uppercase tracking-widest text-[10px] text-text-main/50">Gallery ({selectedListing.photoCount || 0})</h4>
+                      <div className="grid grid-cols-1 gap-4">
+                        {(selectedListing.images || []).map((img, idx) => {
+                          const imgUrl = `https://cdn.repliers.io/${img}`;
+                          return (
+                            <div key={idx} className="relative group rounded-xl overflow-hidden border border-neutral-warm bg-white shadow-sm">
+                              <img src={imgUrl} alt={`Property view ${idx+1}`} className="w-full aspect-video object-cover" />
+                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                                <button 
+                                  className="bg-primary text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all pointer-events-auto"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setView('editor');
+                                    uploadToCloudinary(imgUrl);
+                                  }}
+                                >
+                                  <Wand2 size={16} /> Enhance Photo
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        )}
+
         {view === 'listing-builder' && (
           <div className="listing-builder">
             <div className="max-w-[1920px] mx-auto px-6">
@@ -898,7 +1084,14 @@ function App() {
           </>
         )}
 
-        <div className="max-w-[1920px] mx-auto py-10 w-full relative z-10 px-6 lg:px-10">
+        {view === 'editor' && (
+          <div className="max-w-[1920px] mx-auto py-10 w-full relative z-10 px-6 lg:px-10">
+            <div className="mb-8">
+              <button onClick={() => setView('landing')} className="flex items-center gap-2 text-text-main/60 hover:text-primary transition-colors font-bold">
+                <span className="material-symbols-outlined">arrow_back</span>
+                Back to Homepage
+              </button>
+            </div>
             {(imageState.publicId || isProcessing) && (
           <motion.div 
             className="workspace"
@@ -1069,8 +1262,9 @@ function App() {
               </div>
             </div>
           </motion.div>
+            )}
+          </div>
         )}
-        </div>
       </main>
 
       <footer className="bg-background-dark text-white px-6 py-16 lg:px-10">

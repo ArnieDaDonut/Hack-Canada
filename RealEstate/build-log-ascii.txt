@@ -1,0 +1,12 @@
+
+> my-app@0.1.0 build
+> react-scripts build
+
+Creating an optimized production build...
+Failed to compile.
+
+[eslint] 
+src\App.js
+Syntax error: Identifier 'motion' has already been declared. (15:9) (15:9)
+
+
