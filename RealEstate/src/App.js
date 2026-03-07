@@ -278,9 +278,6 @@ function App() {
                                 <span className="material-symbols-outlined">arrow_forward</span>
                                 <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} disabled={showConfig} />
                             </label>
-<button className="border-2 border-neutral-warm hover:bg-neutral-soft text-text-main px-8 py-4 rounded-xl text-lg font-bold transition-all">
-                                View Gallery
-                            </button>
 </div>
 <div className="flex items-center gap-4 pt-4">
 <div className="flex -space-x-3">
@@ -476,9 +473,6 @@ function App() {
                         Enhance My First Photo
                         <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} disabled={showConfig} />
                     </label>
-<button className="bg-primary/20 border-2 border-white/30 text-white px-10 py-5 rounded-xl text-lg font-bold hover:bg-primary/30 transition-all">
-                        Schedule a Demo
-                    </button>
 </div>
 </div>
 </section>
@@ -693,7 +687,6 @@ function App() {
 <h5 className="font-bold mb-6">Company</h5>
 <ul className="space-y-4 text-sm text-white/50">
 <li><a className="hover:text-primary" href="#testimonials" onClick={(e) => handleNavClick(e, 'testimonials')}>About Us</a></li>
-<li><a className="hover:text-primary" href="#testimonials" onClick={(e) => handleNavClick(e, 'testimonials')}>Case Studies</a></li>
 </ul>
 </div>
 <div className="col-span-2">
