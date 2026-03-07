@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Upload, Home, Image as ImageIcon, Wand2, ArrowRight, Settings, Eraser, Crop, Zap, CheckCircle2, TrendingUp, Tags } from 'lucide-react';
+import { Upload, Home, Image as ImageIcon, Wand2, ArrowRight, Settings, Eraser, Crop, Zap, CheckCircle2, TrendingUp, Tags, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './App.css';
 
@@ -24,6 +24,26 @@ function App() {
   const [enabledFeatures, setEnabledFeatures] = useState(false);
   const [sliderPos, setSliderPos] = useState(50);
   const [landingSliderPos, setLandingSliderPos] = useState(50);
+
+  const [view, setView] = useState('landing');
+  const [listingStep, setListingStep] = useState(1);
+  const [listingImages, setListingImages] = useState({
+    kitchen: [],
+    living: [],
+    bedroom: [],
+    bathroom: [],
+    other: []
+  });
+  const [listingImageIndex, setListingImageIndex] = useState(0);
+  const [listingDetails, setListingDetails] = useState({
+    address: '',
+    price: '',
+    sqft: '',
+    contact: '',
+    enhanceAll: false
+  });
+  const [generatedListing, setGeneratedListing] = useState(null);
+  const [showEmailModal, setShowEmailModal] = useState(false);
 
   const [prompts, setPrompts] = useState({
     bgReplace: 'minimalist bright modern living room',
@@ -98,6 +118,23 @@ function App() {
     }
 
     uploadToCloudinary(file);
+  };
+
+  const startListing = () => {
+    setView('listing-builder');
+    setListingStep(1);
+    window.scrollTo(0, 0);
+  };
+
+  const handleListingUpload = (category, files) => {
+    const fileList = Array.from(files).map(file => ({
+      file,
+      url: URL.createObjectURL(file)
+    }));
+    setListingImages(prev => ({
+      ...prev,
+      [category]: [...prev[category], ...fileList]
+    }));
   };
 
   const generateTransformationUrl = (tab) => {
@@ -246,6 +283,12 @@ function App() {
 <a className="text-text-main/80 text-sm font-semibold hover:text-primary transition-colors" href="#testimonials" onClick={(e) => handleNavClick(e, 'testimonials')}>Testimonials</a>
 </nav>
 <div className="flex items-center gap-4">
+<button 
+  onClick={startListing}
+  className="text-text-main/80 text-sm font-bold hover:text-primary transition-colors hidden sm:block"
+>
+  Create Listing
+</button>
 <label className="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-lg shadow-primary/20 transition-all active:scale-95 cursor-pointer inline-flex">
                     Enhance My First Photo
                     <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} disabled={showConfig} />
@@ -255,7 +298,347 @@ function App() {
 </header>
 
       <main>
-        {!imageState.publicId && !isProcessing && (
+        {view === 'listing-builder' && (
+          <div className="listing-builder">
+            <div className="max-w-7xl mx-auto px-6">
+              <div className="flex items-center justify-between mb-12">
+                <button onClick={() => setView('landing')} className="flex items-center gap-2 text-text-main/60 hover:text-primary transition-colors font-bold">
+                  <span className="material-symbols-outlined">arrow_back</span>
+                  Back to Homepage
+                </button>
+                <div className="text-right">
+                  <h1 className="text-2xl font-black">Property Listing Creator</h1>
+                  <p className="text-sm text-text-main/60">Create a professional listing in minutes</p>
+                </div>
+              </div>
+
+              {/* Stepper */}
+              <div className="stepper">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <div key={s} className={`step ${listingStep === s ? 'active' : ''} ${listingStep > s ? 'completed' : ''}`}>
+                    <div className="step-circle">
+                      {listingStep > s ? <CheckCircle2 size={18} /> : s}
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-50">
+                      {['Uploads', 'Enhance', 'Details', 'Preview', 'Share'][s-1]}
+                    </span>
+                  </div>
+                ))}
+                <div className="absolute top-5 left-0 w-full h-0.5 bg-neutral-warm -z-0"></div>
+              </div>
+
+              {/* Step 1: Uploads */}
+              {listingStep === 1 && (
+                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                  <div className="mb-10 text-center">
+                    <h2 className="text-3xl font-black mb-2">Step 1: Upload Room Photos</h2>
+                    <p className="text-text-main/60">Categorize your property images for the best AI analysis</p>
+                  </div>
+
+                  <div className="upload-grid">
+                    {[
+                      { id: 'kitchen', icon: 'cooking', label: 'Kitchen' },
+                      { id: 'living', icon: 'weekend', label: 'Living Room' },
+                      { id: 'bedroom', icon: 'bed', label: 'Bedrooms' },
+                      { id: 'bathroom', icon: 'bathtub', label: 'Bathrooms' },
+                      { id: 'other', icon: 'home_appliance', label: 'Other/Exterior' }
+                    ].map((cat) => (
+                      <label key={cat.id} className="category-box group">
+                        <div className="category-icon group-hover:scale-110 transition-transform">
+                          <span className="material-symbols-outlined text-4xl">{cat.icon}</span>
+                        </div>
+                        <h3 className="category-title">{cat.label}</h3>
+                        <p className="file-count">
+                          {listingImages[cat.id].length > 0 
+                            ? `${listingImages[cat.id].length} photos uploaded` 
+                            : 'Click to upload multiple'}
+                        </p>
+                        <input 
+                          type="file" 
+                          multiple 
+                          className="hidden" 
+                          onChange={(e) => handleListingUpload(cat.id, e.target.files)} 
+                        />
+                      </label>
+                    ))}
+                  </div>
+
+                  <div className="mt-16 flex justify-center">
+                    <button 
+                      onClick={() => setListingStep(2)}
+                      disabled={Object.values(listingImages).every(arr => arr.length === 0)}
+                      className="bg-primary text-white px-12 py-4 rounded-xl text-lg font-bold shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50 disabled:grayscale disabled:pointer-events-none"
+                    >
+                      Continue to Enhancement
+                      <span className="material-symbols-outlined">magic_button</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 2: Enhancement */}
+              {listingStep === 2 && (
+                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl mx-auto shadow-2xl rounded-3xl overflow-hidden bg-white">
+                  <div className="bg-primary p-12 text-center text-white">
+                    <div className="bg-white/20 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-md">
+                      <span className="material-symbols-outlined text-4xl">auto_fix_high</span>
+                    </div>
+                    <h2 className="text-3xl font-black mb-4">Apply AI Magic?</h2>
+                    <p className="text-white/80">Would you like us to automatically enhance all uploaded photos for maximum market appeal?</p>
+                  </div>
+                  
+                  <div className="p-12 space-y-8">
+                    <div 
+                      onClick={() => setListingDetails({...listingDetails, enhanceAll: true})}
+                      className={`flex items-start gap-6 p-6 rounded-2xl border-2 cursor-pointer transition-all ${listingDetails.enhanceAll ? 'border-primary bg-primary/5 shadow-lg' : 'border-neutral-warm hover:border-primary/30'}`}
+                    >
+                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center mt-1 transition-colors ${listingDetails.enhanceAll ? 'border-primary bg-primary text-white' : 'border-neutral-warm'}`}>
+                        {listingDetails.enhanceAll && <CheckCircle2 size={14} />}
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-lg">Yes, Enhance Everything</h4>
+                        <p className="text-text-main/60 text-sm">Apply lighting correction, sharpening, and decluttering to all photos.</p>
+                      </div>
+                    </div>
+
+                    <div 
+                      onClick={() => setListingDetails({...listingDetails, enhanceAll: false})}
+                      className={`flex items-start gap-6 p-6 rounded-2xl border-2 cursor-pointer transition-all ${!listingDetails.enhanceAll ? 'border-primary bg-primary/5 shadow-lg' : 'border-neutral-warm hover:border-primary/30'}`}
+                    >
+                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center mt-1 transition-colors ${!listingDetails.enhanceAll ? 'border-primary bg-primary text-white' : 'border-neutral-warm'}`}>
+                        {!listingDetails.enhanceAll && <CheckCircle2 size={14} />}
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-lg">No, Keep Originals</h4>
+                        <p className="text-text-main/60 text-sm">Keep the photos exactly as they were uploaded.</p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4 pt-4">
+                      <button onClick={() => setListingStep(1)} className="flex-1 px-8 py-4 rounded-xl font-bold border-2 border-neutral-warm hover:bg-neutral-soft transition-all">Back</button>
+                      <button onClick={() => setListingStep(3)} className="flex-1 bg-primary text-white px-8 py-4 rounded-xl font-bold shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">Next: Property Info</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 3: Details */}
+              {listingStep === 3 && (
+                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl mx-auto shadow-2xl rounded-3xl overflow-hidden bg-white">
+                  <div className="bg-neutral-soft p-12 text-center border-b border-neutral-warm">
+                    <h2 className="text-3xl font-black mb-2">Listing Details</h2>
+                    <p className="text-text-main/60">Provide the core information for your property advertisement</p>
+                  </div>
+                  
+                  <div className="p-12 space-y-6">
+                    <div className="form-group flex flex-col gap-2">
+                      <label className="text-xs font-black uppercase tracking-widest text-text-main/50">Property Address</label>
+                      <input 
+                        className="w-full px-5 py-4 bg-neutral-soft border-2 border-neutral-warm rounded-xl focus:border-primary focus:bg-white transition-all outline-none"
+                        placeholder="123 Luxury Ave, Toronto, ON"
+                        value={listingDetails.address}
+                        onChange={(e) => setListingDetails({...listingDetails, address: e.target.value})}
+                      />
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-6">
+                      <div className="form-group flex flex-col gap-2">
+                        <label className="text-xs font-black uppercase tracking-widest text-text-main/50">Asking Price ($)</label>
+                        <input 
+                          className="w-full px-5 py-4 bg-neutral-soft border-2 border-neutral-warm rounded-xl focus:border-primary focus:bg-white transition-all outline-none"
+                          placeholder="e.g. 1,250,000"
+                          value={listingDetails.price}
+                          onChange={(e) => setListingDetails({...listingDetails, price: e.target.value})}
+                        />
+                      </div>
+                      <div className="form-group flex flex-col gap-2">
+                        <label className="text-xs font-black uppercase tracking-widest text-text-main/50">Square Footage</label>
+                        <input 
+                          className="w-full px-5 py-4 bg-neutral-soft border-2 border-neutral-warm rounded-xl focus:border-primary focus:bg-white transition-all outline-none"
+                          placeholder="e.g. 2,400"
+                          value={listingDetails.sqft}
+                          onChange={(e) => setListingDetails({...listingDetails, sqft: e.target.value})}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group flex flex-col gap-2">
+                      <label className="text-xs font-black uppercase tracking-widest text-text-main/50">Contact Email/Phone</label>
+                      <input 
+                        className="w-full px-5 py-4 bg-neutral-soft border-2 border-neutral-warm rounded-xl focus:border-primary focus:bg-white transition-all outline-none"
+                        placeholder="sarah@peakrealty.com or (555) 0123"
+                        value={listingDetails.contact}
+                        onChange={(e) => setListingDetails({...listingDetails, contact: e.target.value})}
+                      />
+                    </div>
+
+                    <div className="flex gap-4 pt-8">
+                      <button onClick={() => setListingStep(2)} className="flex-1 px-8 py-4 rounded-xl font-bold border-2 border-neutral-warm hover:bg-neutral-soft transition-all">Back</button>
+                      <button 
+                        onClick={() => setListingStep(4)} 
+                        disabled={!listingDetails.address || !listingDetails.price}
+                        className="flex-1 bg-primary text-white px-8 py-4 rounded-xl font-bold shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all disabled:grayscale disabled:opacity-50"
+                      >
+                        Generate Listing
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 4: Preview */}
+              {listingStep === 4 && (
+                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-4xl mx-auto pb-20">
+                  <div className="mb-10 text-center">
+                    <h2 className="text-3xl font-black mb-2">AI-Generated Listing</h2>
+                    <p className="text-text-main/60">Review your professional property advertisement</p>
+                  </div>
+
+                  <div className="bg-white rounded-3xl overflow-hidden shadow-2xl border border-neutral-warm">
+                    <div className="aspect-[21/9] w-full bg-neutral-soft relative group">
+                      {/* Image Gallery */}
+                      {(() => {
+                        const allImages = Object.values(listingImages).flat();
+                        const currentImage = allImages[listingImageIndex]?.url || '/after_transformation.png';
+                        
+                        return (
+                          <>
+                            <img 
+                              src={currentImage} 
+                              className="w-full h-full object-cover transition-all duration-500 animate-in fade-in fill-mode-forwards" 
+                              alt="Listing Hero"
+                              key={currentImage}
+                            />
+                            
+                            {allImages.length > 1 && (
+                              <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button 
+                                  onClick={() => setListingImageIndex(prev => (prev > 0 ? prev - 1 : allImages.length - 1))}
+                                  className="w-12 h-12 rounded-full bg-white/30 backdrop-blur-md border border-white/40 text-white flex items-center justify-center hover:bg-white/50 transition-all shadow-lg pointer-events-auto"
+                                >
+                                  <ChevronLeft size={24} />
+                                </button>
+                                <button 
+                                  onClick={() => setListingImageIndex(prev => (prev < allImages.length - 1 ? prev + 1 : 0))}
+                                  className="w-12 h-12 rounded-full bg-white/30 backdrop-blur-md border border-white/40 text-white flex items-center justify-center hover:bg-white/50 transition-all shadow-lg pointer-events-auto"
+                                >
+                                  <ChevronRight size={24} />
+                                </button>
+                              </div>
+                            )}
+
+                            {allImages.length > 0 && (
+                              <div className="absolute top-6 right-6 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full text-white text-[10px] font-black uppercase tracking-widest border border-white/20">
+                                Photo {listingImageIndex + 1} of {allImages.length}
+                              </div>
+                            )}
+                          </>
+                        );
+                      })()}
+                      <div className="absolute top-6 left-6 flex gap-2">
+                        <span className="bg-primary text-white px-3 py-1 rounded-lg text-xs font-black uppercase tracking-widest">New Listing</span>
+                        {listingDetails.enhanceAll && <span className="bg-green-500 text-white px-3 py-1 rounded-lg text-xs font-black uppercase tracking-widest">AI Enhanced</span>}
+                      </div>
+                      <div className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-xl border border-neutral-warm shadow-lg">
+                        <p className="text-xs font-black text-text-main/50 uppercase tracking-widest">Asking Price</p>
+                        <p className="text-xl font-black text-primary">${listingDetails.price}</p>
+                      </div>
+                    </div>
+
+                    <div className="p-10 grid grid-cols-1 lg:grid-cols-3 gap-12">
+                      <div className="lg:col-span-2 space-y-8">
+                        <div>
+                          <h1 className="text-3xl font-black mb-2">{listingDetails.address}</h1>
+                          <div className="flex items-center gap-6 text-text-main/60 font-bold">
+                            <span className="flex items-center gap-1.5"><span className="material-symbols-outlined text-sm">straighten</span> {listingDetails.sqft} Sq Ft</span>
+                            <span className="flex items-center gap-1.5"><span className="material-symbols-outlined text-sm">calendar_today</span> 2026 Built</span>
+                            <span className="flex items-center gap-1.5"><span className="material-symbols-outlined text-sm">map</span> Great Location</span>
+                          </div>
+                        </div>
+
+                        <div className="prose prose-neutral max-w-none">
+                          <h3 className="text-xl font-bold mb-4">Property Description</h3>
+                          <div className="p-8 bg-neutral-soft rounded-2xl border-l-4 border-primary">
+                            <p className="text-text-main/80 leading-relaxed italic">
+                              "Discover this stunning property at {listingDetails.address}. {listingDetails.enhanceAll ? 'Featuring professionally enhanced visuals that highlight its true potential, this' : 'This'} home offers {listingDetails.sqft} square feet of meticulously maintained living space. 
+                              {listingImages.kitchen.length > 0 && " The gourmet kitchen is a chef's dream with high-end finishes."} 
+                              {listingImages.living.length > 0 && " The expansive living areas are bathed in natural light, perfect for both relaxation and entertaining."}
+                              {listingImages.bedroom.length > 0 && " Each bedroom serves as a quiet retreat with ample storage."}
+                              Experience the perfect blend of comfort and style in this market-ready gem. Available now for ${listingDetails.price}."
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-6">
+                        <div className="p-6 bg-neutral-soft rounded-2xl border border-neutral-warm">
+                          <h4 className="font-black text-xs uppercase tracking-widest text-text-main/50 mb-4">Represented By</h4>
+                          <div className="flex items-center gap-4 mb-6 overflow-hidden">
+                            <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold shrink-0">SM</div>
+                            <div className="overflow-hidden min-w-0">
+                              <p className="font-bold break-all text-sm leading-tight mb-1">{listingDetails.contact || 'Pro Agent'}</p>
+                              <p className="text-[10px] text-text-main/60 uppercase font-black tracking-widest">Verified Estator Partner</p>
+                            </div>
+                          </div>
+                          <button onClick={() => setListingStep(5)} className="w-full bg-primary text-white py-4 rounded-xl font-bold shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2">
+                            Share Listing
+                            <span className="material-symbols-outlined">send</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-10 flex justify-center pb-10">
+                    <button onClick={() => setListingStep(3)} className="text-text-main/60 font-bold hover:text-primary transition-all flex items-center gap-2">
+                      <span className="material-symbols-outlined">edit</span>
+                      Edit Listing Info
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 5: Share */}
+              {listingStep === 5 && (
+                <div className="animate-in fade-in zoom-in duration-500 max-w-xl mx-auto pb-20">
+                   <div className="bg-white rounded-3xl p-12 text-center shadow-2xl border border-neutral-warm">
+                      <div className="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8">
+                        <span className="material-symbols-outlined text-5xl">mark_email_read</span>
+                      </div>
+                      <h2 className="text-3xl font-black mb-4">Listing Ready!</h2>
+                      <p className="text-text-main/60 mb-10">Your professional property listing is live and ready to be shared with potential buyers.</p>
+                      
+                      <div className="space-y-4 mb-10">
+                        <div className="form-group flex flex-col gap-2 text-left">
+                          <label className="text-[10px] font-black uppercase tracking-widest text-text-main/40">Recipient Emails (comma separated)</label>
+                          <input 
+                            className="w-full px-5 py-4 bg-neutral-soft border-2 border-neutral-warm rounded-xl focus:border-primary focus:bg-white transition-all outline-none"
+                            placeholder="buyers-group@realestate.com, client@example.com"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-4">
+                        <button 
+                          onClick={() => {
+                            alert('Listing shared successfully!');
+                            setView('landing');
+                            setListingStep(1);
+                          }}
+                          className="bg-primary text-white py-5 rounded-2xl font-black text-lg shadow-xl shadow-primary/25 hover:scale-105 active:scale-95 transition-all"
+                        >
+                          Send to Recipients
+                        </button>
+                        <button onClick={() => setListingStep(4)} className="text-text-main/60 font-bold hover:text-text-main transition-all">Back to Preview</button>
+                      </div>
+                   </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {view === 'landing' && (
           <>
             
 {/*  Hero Section  */}
@@ -279,6 +662,13 @@ function App() {
                                 <span className="material-symbols-outlined">arrow_forward</span>
                                 <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} disabled={showConfig} />
                             </label>
+<button 
+  onClick={startListing}
+  className="bg-white border-2 border-primary text-primary hover:bg-primary/5 px-8 py-4 rounded-xl text-lg font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/5"
+>
+  Create Full Listing
+  <span className="material-symbols-outlined">add_business</span>
+</button>
 </div>
 <div className="flex items-center gap-4 pt-4">
 <div className="flex -space-x-3">
