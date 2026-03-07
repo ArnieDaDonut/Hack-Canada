@@ -168,6 +168,13 @@ function App() {
     setActiveTab('clutter');
   };
 
+  const handleNavClick = (e, sectionId) => {
+    e.preventDefault();
+    setImageState({ publicId: null, originalUrl: null, format: null, tags: [], originalScore: null });
+    setEnhancedUrl(null);
+    window.location.hash = sectionId;
+  };
+
   const addTagToRemove = (tag) => {
     if (activeTab === 'clutter') {
       const currentList = prompts.removeText ? prompts.removeText.split(',').map(s=>s.trim()) : [];
@@ -179,7 +186,7 @@ function App() {
   };
 
   return (
-    <div className="bg-background-light dark:bg-background-dark font-display min-h-screen relative">
+    <div className="bg-background-light font-display min-h-screen relative text-text-main">
       {/* Configuration Modal */}
       <AnimatePresence>
         {showConfig && (
@@ -226,20 +233,18 @@ function App() {
 
       <header className="sticky top-0 z-50 w-full border-b border-neutral-warm bg-white/90 backdrop-blur-md">
 <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
-<div className="flex items-center gap-2 group cursor-pointer">
+<div className="flex items-center gap-2 group cursor-pointer" onClick={(e) => handleNavClick(e, 'top')}>
 <div className="bg-primary p-1.5 rounded-lg text-white">
 <span className="material-symbols-outlined block text-2xl">apartment</span>
 </div>
 <h2 className="text-text-main text-xl font-bold tracking-tight">Estator</h2>
 </div>
 <nav className="hidden md:flex items-center gap-10">
-<a className="text-text-main/80 text-sm font-semibold hover:text-primary transition-colors" href="#features">Features</a>
-<a className="text-text-main/80 text-sm font-semibold hover:text-primary transition-colors" href="#process">Process</a>
-<a className="text-text-main/80 text-sm font-semibold hover:text-primary transition-colors" href="#pricing">Pricing</a>
-<a className="text-text-main/80 text-sm font-semibold hover:text-primary transition-colors" href="#testimonials">Testimonials</a>
+<a className="text-text-main/80 text-sm font-semibold hover:text-primary transition-colors" href="#features" onClick={(e) => handleNavClick(e, 'features')}>Features</a>
+<a className="text-text-main/80 text-sm font-semibold hover:text-primary transition-colors" href="#process" onClick={(e) => handleNavClick(e, 'process')}>Process</a>
+<a className="text-text-main/80 text-sm font-semibold hover:text-primary transition-colors" href="#testimonials" onClick={(e) => handleNavClick(e, 'testimonials')}>Testimonials</a>
 </nav>
 <div className="flex items-center gap-4">
-<button className="hidden sm:block text-sm font-bold text-text-main hover:text-primary transition-colors">Log In</button>
 <label className="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-lg shadow-primary/20 transition-all active:scale-95 cursor-pointer inline-flex">
                     Enhance My First Photo
                     <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} disabled={showConfig} />
@@ -253,7 +258,7 @@ function App() {
           <>
             
 {/*  Hero Section  */}
-<section className="relative overflow-hidden bg-white px-6 py-16 lg:px-10 lg:py-24">
+<section className="relative overflow-hidden bg-white px-6 py-16 lg:px-10 lg:py-24" id="top">
 <div className="mx-auto max-w-7xl">
 <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
 <div className="flex flex-col gap-8">
@@ -645,7 +650,7 @@ function App() {
                 {isProcessing && (
                   <div className="processing-overlay">
                     <div className="spinner"></div>
-                    <h3 style={{color: 'white', margin: '0 0 0.5rem 0'}}>AI Processing...</h3>
+                    <h3>AI Processing...</h3>
                     <p>Detecting walls, floors, and object boundaries to apply Generative AI seamlessly.</p>
                   </div>
                 )}
@@ -679,19 +684,16 @@ function App() {
 <div>
 <h5 className="font-bold mb-6">Product</h5>
 <ul className="space-y-4 text-sm text-white/50">
-<li><a className="hover:text-primary" href="#">AI Enhancer</a></li>
-<li><a className="hover:text-primary" href="#">Virtual Staging</a></li>
-<li><a className="hover:text-primary" href="#">Item Removal</a></li>
-<li><a className="hover:text-primary" href="#">API Access</a></li>
+<li><a className="hover:text-primary" href="#features" onClick={(e) => handleNavClick(e, 'features')}>AI Enhancer</a></li>
+<li><a className="hover:text-primary" href="#process" onClick={(e) => handleNavClick(e, 'process')}>Virtual Staging</a></li>
+<li><a className="hover:text-primary" href="#process" onClick={(e) => handleNavClick(e, 'process')}>Item Removal</a></li>
 </ul>
 </div>
 <div>
 <h5 className="font-bold mb-6">Company</h5>
 <ul className="space-y-4 text-sm text-white/50">
-<li><a className="hover:text-primary" href="#">About Us</a></li>
-<li><a className="hover:text-primary" href="#">Case Studies</a></li>
-<li><a className="hover:text-primary" href="#">Contact</a></li>
-<li><a className="hover:text-primary" href="#">Privacy</a></li>
+<li><a className="hover:text-primary" href="#testimonials" onClick={(e) => handleNavClick(e, 'testimonials')}>About Us</a></li>
+<li><a className="hover:text-primary" href="#testimonials" onClick={(e) => handleNavClick(e, 'testimonials')}>Case Studies</a></li>
 </ul>
 </div>
 <div className="col-span-2">

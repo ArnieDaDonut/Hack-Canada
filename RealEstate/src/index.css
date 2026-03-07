@@ -1,30 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --bg-color: #030305;
-  --panel-bg: rgba(18, 18, 24, 0.5);
-  --panel-border: rgba(255, 255, 255, 0.06);
-  --text-primary: #FFFFFF;
-  --text-secondary: #9CA3AF;
+  --bg-color: #f8f6f6;
+  --panel-bg: rgba(255, 255, 255, 0.8);
+  --panel-border: #e4dcdc;
+  --text-primary: #171212;
+  --text-secondary: #6B7280;
   
-  /* Luxury Gold Gradient/Accent */
-  --accent-color: #D4AF37;
-  --accent-hover: #FCE68E;
-  --accent-light: rgba(212, 175, 55, 0.1);
-  --accent-glow: rgba(212, 175, 55, 0.25);
+  /* Stitch Red Accent */
+  --accent-color: #d33131;
+  --accent-hover: #b92a2a;
+  --accent-light: rgba(211, 49, 49, 0.05);
+  --accent-glow: rgba(211, 49, 49, 0.15);
   
-  --success: #10B981;
-  --success-bg: rgba(16, 185, 129, 0.1);
-  --error: #EF4444;
+  --success: #059669;
+  --success-bg: rgba(5, 150, 105, 0.05);
+  --error: #dc2626;
   
-  --radius-lg: 20px;
-  --radius-md: 12px;
-  --radius-sm: 8px;
+  --radius-lg: 0.75rem;
+  --radius-md: 0.5rem;
+  --radius-sm: 0.25rem;
   
-  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
-  --shadow-glow: 0 0 40px var(--accent-glow);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04);
+  --shadow-glow: 0 0 20px var(--accent-glow);
 }
 
 body {
@@ -38,30 +38,31 @@ body {
   position: relative;
 }
 
-/* Subtle atmospheric lighting */
+/* Subtle atmospheric lighting - Light Mode */
 body::before, body::after {
   content: '';
   position: fixed;
   border-radius: 50%;
-  filter: blur(120px);
+  filter: blur(100px);
   z-index: -1;
   pointer-events: none;
+  opacity: 0.4;
 }
 
 body::before {
   top: -10%;
   left: -10%;
-  width: 50vw;
-  height: 50vw;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, rgba(3, 3, 5, 0) 70%);
+  width: 40vw;
+  height: 40vw;
+  background: radial-gradient(circle, rgba(211, 49, 49, 0.05) 0%, rgba(248, 246, 246, 0) 70%);
 }
 
 body::after {
   bottom: -20%;
   right: -10%;
-  width: 60vw;
-  height: 60vw;
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.03) 0%, rgba(3, 3, 5, 0) 70%);
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(5, 150, 105, 0.03) 0%, rgba(248, 246, 246, 0) 70%);
 }
 
 * {
