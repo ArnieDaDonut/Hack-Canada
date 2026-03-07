@@ -270,7 +270,7 @@ function App() {
       </AnimatePresence>
 
       <header className="sticky top-0 z-50 w-full border-b border-neutral-warm bg-white/90 backdrop-blur-md">
-<div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
+<div className="mx-auto flex max-w-[1920px] items-center justify-between px-6 py-4 lg:px-10">
 <div className="flex items-center gap-2 group cursor-pointer" onClick={(e) => handleNavClick(e, 'top')}>
 <div className="bg-primary p-1.5 rounded-lg text-white">
 <span className="material-symbols-outlined block text-2xl">apartment</span>
@@ -300,7 +300,7 @@ function App() {
       <main>
         {view === 'listing-builder' && (
           <div className="listing-builder">
-            <div className="max-w-7xl mx-auto px-6">
+            <div className="max-w-[1920px] mx-auto px-6">
               <div className="flex items-center justify-between mb-12">
                 <button onClick={() => setView('landing')} className="flex items-center gap-2 text-text-main/60 hover:text-primary transition-colors font-bold">
                   <span className="material-symbols-outlined">arrow_back</span>
@@ -488,7 +488,7 @@ function App() {
 
               {/* Step 4: Preview */}
               {listingStep === 4 && (
-                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-4xl mx-auto pb-20">
+                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-[1700px] mx-auto pb-20">
                   <div className="mb-10 text-center">
                     <h2 className="text-3xl font-black mb-2">AI-Generated Listing</h2>
                     <p className="text-text-main/60">Review your professional property advertisement</p>
@@ -643,7 +643,7 @@ function App() {
             
 {/*  Hero Section  */}
 <section className="relative overflow-hidden bg-white px-6 py-16 lg:px-10 lg:py-24" id="top">
-<div className="mx-auto max-w-7xl">
+<div className="mx-auto max-w-[1920px]">
 <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
 <div className="flex flex-col gap-8">
 <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
@@ -698,7 +698,7 @@ function App() {
 </section>
 {/*  Visual Demo Section  */}
 <section className="bg-neutral-soft px-6 py-20 lg:px-10">
-<div className="mx-auto max-w-7xl">
+<div className="mx-auto max-w-[1920px]">
 <div className="mb-12 flex flex-col items-center text-center">
 <h2 className="text-text-main text-3xl font-black lg:text-4xl">Witness the Transformation</h2>
 <p className="mt-4 max-w-2xl text-text-main/60">Slide to compare: See how Estator AI handles difficult lighting and clutter to create stunning, market-ready images.</p>
@@ -755,7 +755,7 @@ function App() {
 </section>
 {/*  Core Features Section  */}
 <section className="bg-white px-6 py-20 lg:px-10" id="features">
-<div className="mx-auto max-w-7xl">
+<div className="mx-auto max-w-[1920px]">
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
 {/*  Feature 1  */}
 <div className="group flex flex-col gap-5 p-8 rounded-2xl border border-neutral-warm bg-white hover:border-primary/30 transition-all hover:shadow-xl hover:shadow-neutral-warm/50">
@@ -794,7 +794,7 @@ function App() {
 </section>
 {/*  Process Section  */}
 <section className="bg-neutral-soft px-6 py-20 lg:px-10 border-y border-neutral-warm" id="process">
-<div className="mx-auto max-w-7xl">
+<div className="mx-auto max-w-[1920px]">
 <div className="mb-16 text-center">
 <h2 className="text-text-main text-3xl font-black lg:text-4xl">The 3-Step Success Path</h2>
 <p className="mt-4 text-text-main/60">Professional photos in minutes, not days.</p>
@@ -834,7 +834,7 @@ function App() {
 </section>
 {/*  Testimonials Section  */}
 <section className="bg-white px-6 py-20 lg:px-10" id="testimonials">
-<div className="mx-auto max-w-7xl">
+<div className="mx-auto max-w-[1920px]">
 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 <div>
 <h2 className="text-text-main text-4xl font-black mb-8 leading-tight">What Real Estate Leaders Say</h2>
@@ -898,7 +898,7 @@ function App() {
           </>
         )}
 
-        <div className="max-w-7xl mx-auto py-10 w-full relative z-10 px-6 lg:px-10">
+        <div className="max-w-[1920px] mx-auto py-10 w-full relative z-10 px-6 lg:px-10">
             {(imageState.publicId || isProcessing) && (
           <motion.div 
             className="workspace"
@@ -1074,7 +1074,7 @@ function App() {
       </main>
 
       <footer className="bg-background-dark text-white px-6 py-16 lg:px-10">
-<div className="mx-auto max-w-7xl">
+<div className="mx-auto max-w-[1920px]">
 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-12 mb-16">
 <div className="col-span-2">
 <div className="flex items-center gap-2 mb-6">

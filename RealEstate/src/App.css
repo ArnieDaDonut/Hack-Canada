@@ -65,7 +65,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
-  max-width: 1300px;
+  max-width: 1920px;
   margin: 0 auto;
 }
 
@@ -907,7 +907,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
 }
 
