@@ -21,6 +21,14 @@ function App() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [activeTab, setActiveTab] = useState('improve');
 
+  // Interactive AI Prompts
+  const [prompts, setPrompts] = useState({
+    bgReplace: 'minimalist bright modern living room',
+    redecorateFrom: 'furniture',
+    redecorateTo: 'modern minimalist furniture',
+    removeText: 'clothes and trash and clutter'
+  });
+
   // Save config to local storage
   const saveConfig = (e) => {
     e.preventDefault();
@@ -70,7 +78,6 @@ function App() {
     const file = e.target.files[0];
     if (!file) return;
     
-    // Quick validation
     if (!file.type.startsWith('image/')) {
       alert('Please upload an image file');
       return;
@@ -84,23 +91,42 @@ function App() {
     
     const base = `https://res.cloudinary.com/${config.cloudName}/image/upload`;
     let transformation = '';
-    const optimizations = 'f_auto,q_auto'; // Always apply performance optimizations
+    const optimizations = 'f_auto,q_auto'; 
+
+    // Encode spaces and special characters for the URL parameters
+    const encode = (text) => encodeURIComponent(text.trim());
 
     switch (tab) {
       case 'improve':
         transformation = 'e_improve,e_sharpen:100,c_fill,g_auto';
         break;
-      case 'staging':
-        // Generate a beautifully staged background
-        transformation = 'e_gen_background_replace:prompt_minimalist bright modern living room,c_fill,g_auto';
+      case 'background':
+        // Replace background behind the main subject
+        transformation = `e_gen_background_replace:prompt_${encode(prompts.bgReplace)},c_fill,g_auto`;
+        break;
+      case 'redecorate':
+        // Replace a specific object with another object (multiple_true replaces all instances)
+        transformation = `e_gen_replace:from_${encode(prompts.redecorateFrom)};to_${encode(prompts.redecorateTo)};multiple_true,c_fill,g_auto`;
         break;
       case 'clutter':
-        // Try to remove clutter (furniture in this case to empty the room)
-        transformation = 'e_gen_remove:prompt_furniture;mess;clutter';
-        break;
-      case 'optimize':
-        // Just resize nicely and optimize for web
-        transformation = 'c_fill,w_1200,h_800,g_auto';
+        // Clean conversational filler words
+        const cleanedText = prompts.removeText
+          .replace(/\b(remove|delete|erase|take out|get rid of|all|the|from|this|picture|photo|image|room|background|bed|floor)\b/gi, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+          
+        // Convert comma/and separated list into multiple Cloudinary prompts + multiple_true
+        const clutterItems = cleanedText
+          .split(/,|\band\b/i)
+          .map(item => item.trim())
+          .filter(item => item.length > 0)
+          .map(item => `prompt_${encode(item)}`)
+          .join(';');
+          
+        // Fallback to original if totally stripped
+        const finalClutter = clutterItems.length > 0 ? clutterItems : `prompt_${encode(prompts.removeText)}`;
+          
+        transformation = `e_gen_remove:${finalClutter};multiple_true,c_fill,g_auto`;
         break;
       default:
         transformation = '';
@@ -109,21 +135,23 @@ function App() {
     return `${base}/${transformation}/${optimizations}/${imageState.publicId}.${imageState.format}`;
   };
 
-  const applyEnhancement = (tab) => {
-    setActiveTab(tab);
+  const applyEnhancement = () => {
+    if (!imageState.publicId) return;
     setIsProcessing(true);
     
-    const newUrl = generateTransformationUrl(tab);
+    const newUrl = generateTransformationUrl(activeTab);
     
-    // We create an Image object to preload the Cloudinary URL (which might take a few seconds if generating AI)
+    // Create an Image object to preload the Cloudinary URL
     const img = new Image();
     img.onload = () => {
       setEnhancedUrl(newUrl);
       setIsProcessing(false);
     };
     img.onerror = () => {
-      setEnhancedUrl(newUrl); // Still set it so the user sees the image/error
+      // If it fails (e.g. 400 Bad Request), still show so they can see error, stop spinner
+      setEnhancedUrl(newUrl); 
       setIsProcessing(false);
+      alert('Failed to generate image. Please check your Cloudinary configuration or Try a simpler prompt.');
     };
     img.src = newUrl;
   };
@@ -251,34 +279,100 @@ function App() {
               <div className="tabs">
                 <button 
                   className={`tab ${activeTab === 'improve' ? 'active' : ''}`}
-                  onClick={() => applyEnhancement('improve')}
+                  onClick={() => setActiveTab('improve')}
                   disabled={isProcessing}
                 >
                   <Wand2 size={16} /> Auto-Improve Lighting
                 </button>
                 <button 
-                  className={`tab ${activeTab === 'staging' ? 'active' : ''}`}
-                  onClick={() => applyEnhancement('staging')}
-                  disabled={isProcessing}
-                >
-                  <ImageIcon size={16} /> Virtual Staging (AI)
-                </button>
-                <button 
                   className={`tab ${activeTab === 'clutter' ? 'active' : ''}`}
-                  onClick={() => applyEnhancement('clutter')}
+                  onClick={() => setActiveTab('clutter')}
                   disabled={isProcessing}
                 >
-                  <Eraser size={16} /> Remove Clutter (AI)
+                  <Eraser size={16} /> Remove Clutter
                 </button>
                 <button 
-                  className={`tab ${activeTab === 'optimize' ? 'active' : ''}`}
-                  onClick={() => applyEnhancement('optimize')}
+                  className={`tab ${activeTab === 'redecorate' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('redecorate')}
                   disabled={isProcessing}
                 >
-                  <Crop size={16} /> Best Crop & Web Format
+                  <ImageIcon size={16} /> Redecorate Room
+                </button>
+                <button 
+                  className={`tab ${activeTab === 'background' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('background')}
+                  disabled={isProcessing}
+                >
+                  <ImageIcon size={16} /> Virtual Staging (Background)
                 </button>
               </div>
               
+              <div className="tool-config">
+                <AnimatePresence mode="wait">
+                  {activeTab === 'improve' && (
+                    <motion.div key="improve" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="config-box">
+                      <p className="help-text">Instantly applies intelligent cropping, sharpening, and color adjustments.</p>
+                    </motion.div>
+                  )}
+                  {activeTab === 'clutter' && (
+                    <motion.div key="clutter" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="config-box">
+                      <label>What objects to remove?</label>
+                      <input 
+                        type="text" 
+                        value={prompts.removeText} 
+                        onChange={e => setPrompts({...prompts, removeText: e.target.value})}
+                        className="prompt-input"
+                        placeholder="e.g. clothes, trash, books, boxes"
+                      />
+                      <p className="help-text">For best results, just list the object names (comma-separated).</p>
+                    </motion.div>
+                  )}
+                  {activeTab === 'redecorate' && (
+                    <motion.div key="redecorate" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="config-box">
+                      <label>Replace object:</label>
+                      <input 
+                        type="text" 
+                        value={prompts.redecorateFrom} 
+                        onChange={e => setPrompts({...prompts, redecorateFrom: e.target.value})}
+                        className="prompt-input"
+                        placeholder="e.g. bed"
+                      />
+                      <label style={{marginTop: '0.5rem'}}>With new object:</label>
+                      <input 
+                        type="text" 
+                        value={prompts.redecorateTo} 
+                        onChange={e => setPrompts({...prompts, redecorateTo: e.target.value})}
+                        className="prompt-input"
+                        placeholder="e.g. modern minimalist sofa"
+                      />
+                      <p className="help-text">Uses Generative Replace to seamlessly swap out furniture pieces.</p>
+                    </motion.div>
+                  )}
+                  {activeTab === 'background' && (
+                    <motion.div key="background" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="config-box">
+                      <label>Generate new background:</label>
+                      <textarea 
+                        value={prompts.bgReplace} 
+                        onChange={e => setPrompts({...prompts, bgReplace: e.target.value})}
+                        className="prompt-input"
+                        rows="2"
+                        placeholder="e.g. minimalist bright modern living room"
+                      />
+                      <p className="help-text">Best for empty spaces or portraits. Replaces the background behind the primary foreground subject.</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                
+                <button 
+                  className="action-btn primary"
+                  onClick={applyEnhancement}
+                  disabled={isProcessing}
+                  style={{marginTop: '1.5rem'}}
+                >
+                  {isProcessing ? 'Generating AI...' : 'Apply Magic ✨'}
+                </button>
+              </div>
+
               <div className="info-box">
                 <h4>Detected Attributes</h4>
                 <div className="tags-container" style={{ position: 'relative', bottom: 0, left: 0, right: 0 }}>
@@ -313,7 +407,7 @@ function App() {
                       <img src={enhancedUrl} alt="Enhanced" />
                     ) : (
                       <div className="placeholder-text">
-                        Select an AI tool from the left to enhance this photo
+                        Configure the AI tool on the left and click "Apply Magic" to see the result!
                       </div>
                     )}
                   </div>

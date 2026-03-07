@@ -275,6 +275,53 @@ h1 {
   color: white;
 }
 
+/* Tool Config & Inputs */
+.tool-config {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-top: 0.5rem;
+  min-height: 120px;
+}
+
+.config-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.config-box label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+.prompt-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  padding: 0.75rem;
+  color: white;
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  resize: vertical;
+}
+
+.prompt-input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.help-text {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 0.75rem 0 0 0;
+  font-style: italic;
+}
+
 /* Image Preview Area */
 .preview-panel {
   min-height: 500px;
