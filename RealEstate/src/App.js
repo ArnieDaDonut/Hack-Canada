@@ -23,6 +23,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('clutter');
   const [enabledFeatures, setEnabledFeatures] = useState(false);
   const [sliderPos, setSliderPos] = useState(50);
+  const [landingSliderPos, setLandingSliderPos] = useState(50);
 
   const [prompts, setPrompts] = useState({
     bgReplace: 'minimalist bright modern living room',
@@ -312,27 +313,54 @@ function App() {
 <h2 className="text-text-main text-3xl font-black lg:text-4xl">Witness the Transformation</h2>
 <p className="mt-4 max-w-2xl text-text-main/60">Slide to compare: See how Estator AI handles difficult lighting and clutter to create stunning, market-ready images.</p>
 </div>
-<div className="group relative aspect-video w-full max-w-5xl mx-auto overflow-hidden rounded-3xl shadow-2xl bg-neutral-warm">
-{/*  Before/After Simulation  */}
-<div className="absolute inset-0 flex">
-<div className="relative w-1/2 overflow-hidden border-r-2 border-white">
-<img className="h-full w-full object-cover grayscale-[0.5] brightness-75 contrast-75" data-alt="A cluttered and poorly lit living room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClu8Dhf4jEtzempO8qlAHZPtMOTQXuJa2p8YThTWjb6944l-6ldxHUiihhVdRcRUrWbEPS3a5E4fqaF4pp31HJ1rW9HzZM-Uxf06Ghe-a4QlU2zvhmOS_iWKdMKITnGXw4_O9Bf_-FMLL7tVr50d3znNn_QwKNjb7yRySBZrG_tNp2vsuXIlwx5MUuwmmkuoo0SegvJKHT8Ifec2t2esFbOvVJOEEGch5N0F05Y2dT4oI7FVIw99Qf-_JUug8bKQkCH44ECgrNRDA"/>
-<div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-md text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Original: Dull &amp; Cluttered</div>
-</div>
-<div className="relative w-1/2 overflow-hidden">
-<img className="h-full w-full object-cover brightness-110 saturate-125" data-alt="The same room staged and professionally enhanced" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3BlRkDXVMNVSqgcGdZe3Fl0mjyO94PjmLzIJDIs8NWd0D0qMR-ryqa-L2Ezi3TeeaOoy1u9CuMtseOiKO36AKE1XHIjVABC-s98cg0GC5gdzZ3in1wyfFT8aaw9UzFuz_Vmy2Vxek_patXsQbaUZGPY4NevMv27_gQIRUJvG1K3Q7kTMlwpgYH6uLDlJyTiYIzhZahTx0BVwz1CLiCWf5PgR0rZPytzBrZm7BEgiOtqUofXdTOwAxZHj1V0y6hfZ8ZzMl56D7aOI"/>
-<div className="absolute bottom-4 right-4 bg-primary text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Estator AI: Enhanced</div>
-</div>
-</div>
-{/*  Slider Handle Mockup  */}
-<div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-<div className="h-full w-1 bg-white relative">
-<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center border-4 border-primary">
-<span className="material-symbols-outlined text-primary font-bold">unfold_more</span>
-</div>
-</div>
-</div>
-</div>
+        <div className="group relative aspect-video w-full max-w-5xl mx-auto overflow-hidden rounded-3xl shadow-2xl bg-neutral-warm">
+          <div className="comparison-slider-container">
+            {/* Before Image */}
+            <div className="relative h-full w-full overflow-hidden">
+              <img 
+                className="comparison-image before" 
+                data-alt="A highly cluttered and messy living room" 
+                src="/before_transformation.png"
+              />
+              <div className="slider-label before">Original: Messy & Cluttered</div>
+            </div>
+
+            {/* After Image */}
+            <div 
+              className="absolute inset-0 z-10 overflow-hidden"
+              style={{ clipPath: `inset(0 0 0 ${landingSliderPos}%)` }}
+            >
+              <img 
+                className="comparison-image after" 
+                data-alt="The same room professionally staged and cleaned" 
+                src="/after_transformation.png"
+              />
+              <div className="slider-label after">Estator AI: Staged & Bright</div>
+            </div>
+
+            {/* Slider UI */}
+            <div 
+              className="slider-handle-line" 
+              style={{ left: `${landingSliderPos}%` }}
+            />
+            <div 
+              className="slider-handle-button"
+              style={{ left: `${landingSliderPos}%` }}
+            >
+              <Zap className="w-6 h-6 fill-primary" />
+            </div>
+
+            {/* Input Overlay */}
+            <input 
+              type="range" 
+              min="0" 
+              max="100" 
+              value={landingSliderPos}
+              onChange={(e) => setLandingSliderPos(e.target.value)}
+              className="comparison-slider-input"
+            />
+          </div>
+        </div>
 </div>
 </section>
 {/*  Core Features Section  */}
