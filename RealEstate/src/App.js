@@ -128,11 +128,13 @@ function App() {
           .split(/,|\band\b/i)
           .map(item => item.trim())
           .filter(item => item.length > 0)
-          .map(item => `prompt_${encode(item)}`)
-          .join(';');
+          .map(item => `e_gen_remove:prompt_${encode(item)};multiple_true`);
           
-        const finalClutter = clutterItems.length > 0 ? clutterItems : `prompt_${encode(prompts.removeText)}`;
-        transformation = `e_gen_remove:${finalClutter};multiple_true,c_fill,g_auto`;
+        if (clutterItems.length > 0) {
+          transformation = `${clutterItems.join('/')},c_fill,g_auto`;
+        } else {
+          transformation = `e_gen_remove:prompt_${encode(prompts.removeText)};multiple_true,c_fill,g_auto`;
+        }
         break;
       default:
         transformation = '';
