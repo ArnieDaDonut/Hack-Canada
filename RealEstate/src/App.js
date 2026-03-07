@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Upload, Home, Image as ImageIcon, Wand2, ArrowRight, Settings, Eraser, Crop, Zap, CheckCircle2, TrendingUp, Tags, ChevronLeft, ChevronRight, MapPin, X } from 'lucide-react';
+import { Upload, Home, Image as ImageIcon, Wand2, ArrowRight, Settings, Eraser, Crop, Zap, CheckCircle2, TrendingUp, Tags, ChevronLeft, ChevronRight, MapPin, X, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import L from 'leaflet';
@@ -295,6 +295,25 @@ function App() {
     setView('landing');
   };
 
+  const handleDownload = async () => {
+    if (!enhancedUrl) return;
+    try {
+      const response = await fetch(enhancedUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `enhanced-property-${imageState.publicId || 'image'}.jpg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Download failed', err);
+      alert('Failed to download image. Please try again.');
+    }
+  };
+
   const handleNavClick = (e, sectionId) => {
     e.preventDefault();
     setImageState({ publicId: null, originalUrl: null, format: null, tags: [], originalScore: null });
@@ -541,7 +560,7 @@ function App() {
                       { id: 'living', icon: 'weekend', label: 'Living Room' },
                       { id: 'bedroom', icon: 'bed', label: 'Bedrooms' },
                       { id: 'bathroom', icon: 'bathtub', label: 'Bathrooms' },
-                      { id: 'other', icon: 'home_appliance', label: 'Other/Exterior' }
+                      { id: 'other', icon: 'home_work', label: 'Other/Exterior' }
                     ].map((cat) => (
                       <label key={cat.id} className="category-box group">
                         <div className="category-icon group-hover:scale-110 transition-transform">
@@ -1237,9 +1256,17 @@ function App() {
                   </div>
                 )}
                 {enhancedUrl && (
-                  <motion.div initial={{scale:0.9, opacity:0}} animate={{scale:1, opacity:1}} className="score-card enhanced">
-                    <span className="score-label">Enhanced Appeal Score</span>
-                    <span className="score-value success">98<small>/100</small></span>
+                  <motion.div initial={{scale:0.9, opacity:0}} animate={{scale:1, opacity:1}} className="flex flex-col gap-4">
+                    <div className="score-card enhanced">
+                      <span className="score-label">Enhanced Appeal Score</span>
+                      <span className="score-value success">98<small>/100</small></span>
+                    </div>
+                    <button 
+                      onClick={handleDownload}
+                      className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-95"
+                    >
+                      <Download size={18} /> Download Enhanced Photo
+                    </button>
                   </motion.div>
                 )}
               </div>
