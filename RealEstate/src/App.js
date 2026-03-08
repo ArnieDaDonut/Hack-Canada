@@ -1192,14 +1192,7 @@ function App() {
                         <span className="material-symbols-outlined">add_business</span>
                       </button>
                     </div>
-                    <div className="flex items-center gap-4 pt-4">
-                      <div className="flex -space-x-3">
-                        <img className="h-10 w-10 rounded-full border-2 border-white object-cover" alt="Portrait of a male real estate agent" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXxKpdI-WUN6r1N7BejUkzka0KfSiequiuEqa5jrVjS5CqCa69lr8jesshOroSBGA3_xlEEpfVJn8MMUSlK-ZOzxb8KUVVLET9E49CA0BJmxJx_jXHd77jXmzocYM67xmdJIYwD-zJAqmJUhjr7Rx23XBYXPrrQprI3P_1E5gJGPX-6RPzHMrHOpGBS3TkWBqrg3g0DPZPOz6fJDsKjWOsgCepoG-ShS4zNUI_0Lhovw-0XlDVEEECLbx30eXzuAcLkALkSj987Cc" />
-                        <img className="h-10 w-10 rounded-full border-2 border-white object-cover" alt="Portrait of a female realtor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhzFcv6DuZI0eJo0b9lZChC9koBhAt5NyDSwLXMxo7ylVCvw6CvALRIa1UjNnfATjhbeYuypKFGzLtMHf-1isngXNm4I2D76ViYN__cgy3-OJtwOeonZILnXne0Z5ccMOxBRKeu716yUTc9DewjYPbwOlFpXsqd5RIseiA6WeOSR_ozo9r8fzXq7tYMqB5SEu8r53K4akuno6mFmsON5iEQ-Km8DuH3fYp-aCWW93oUFqfnThzX-TdpGlt7V30CLhN_ORflHV1kM0" />
-                        <img className="h-10 w-10 rounded-full border-2 border-white object-cover" alt="Portrait of a professional broker" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDl_LqwhKSyK2X7QwBWRw8V4NMACHPpJJLOd-zbrSn8GBIvXvDuZK7H-k4_WEbd2RX_rtLNakdF-Q-V-qf_rkG3SeCdHdJVI20nSQEXVTfxeENelb-V6IAsJ80YJRIvLcAMSfZXvQ0scdQEXV2yuaKmBye03CDFzmRoe1MMRPk3qODyG1w4eCLpDrDdjCcGp5IZQQv4-7GBNPMG7pCZ1wLYa0tB-bAbYNYZbT5A_evurKPLhPQ9-F7E4RbHUIAzruZx_BC6aN8cAEQ" />
-                      </div>
-                      <p className="text-sm font-medium text-text-main/60">Trusted by 5,000+ Real Estate Pros</p>
-                    </div>
+
                   </div>
                   <div className="relative">
                     <div className="aspect-[4/3] w-full overflow-hidden rounded-3xl bg-neutral-soft shadow-2xl">
