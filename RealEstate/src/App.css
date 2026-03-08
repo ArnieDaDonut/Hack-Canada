@@ -614,62 +614,6 @@
   gap: 1.5rem;
 }
 
-.score-boards {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-}
-
-.score-card {
-  background: white;
-  padding: 1.5rem 2rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--neutral-warm);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 240px;
-  color: var(--text-main);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-}
-
-.score-card.enhanced {
-  background: white;
-  border-color: var(--primary);
-  box-shadow: 0 10px 30px rgba(211, 49, 49, 0.08);
-}
-
-.score-label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  margin-bottom: 0.8rem;
-}
-
-.score-value {
-  font-size: 4rem;
-  font-weight: 700;
-  line-height: 1;
-  color: var(--text-main);
-}
-
-.score-value.error {
-  color: var(--text-main);
-}
-
-.score-value.success {
-  color: var(--primary);
-}
-
-.score-value small {
-  font-size: 1.25rem;
-  font-weight: 400;
-  opacity: 0.5;
-  font-family: 'Outfit', sans-serif;
-}
-
 .image-comparison {
   display: flex;
   gap: 1.5rem;

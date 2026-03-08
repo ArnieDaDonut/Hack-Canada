@@ -38,8 +38,7 @@ function App() {
       publicId: null,
       originalUrl: null,
       format: null,
-      tags: [],
-      originalScore: null
+      tags: []
     };
   });
   
@@ -200,10 +199,6 @@ function App() {
       const data = await response.json();
       
       if (data.error) throw new Error(data.error.message);
-
-      // We auto-generate a low "original score" to simulate AI listing analysis
-      const score = Math.floor(Math.random() * (65 - 40 + 1) + 40);
-
       const detectedTags = data.tags && data.tags.length > 0 
         ? data.tags.filter(t => !['indoor', 'room', 'house'].includes(t.toLowerCase())) 
         : ['clutter', 'boxes', 'clothes', 'trash'];
@@ -212,8 +207,7 @@ function App() {
         publicId: data.public_id,
         originalUrl: data.secure_url,
         format: data.format,
-        tags: detectedTags,
-        originalScore: score
+        tags: detectedTags
       });
       
       // Auto-prefill the remove text with the most likely clutter tags
@@ -326,7 +320,7 @@ function App() {
   };
 
   const resetSession = () => {
-    setImageState({ publicId: null, originalUrl: null, format: null, tags: [], originalScore: null });
+    setImageState({ publicId: null, originalUrl: null, format: null, tags: [] });
     setEnhancedUrl(null);
     setActiveTab('clutter');
     setView('landing');
@@ -353,7 +347,7 @@ function App() {
 
   const handleNavClick = (e, sectionId) => {
     e.preventDefault();
-    setImageState({ publicId: null, originalUrl: null, format: null, tags: [], originalScore: null });
+    setImageState({ publicId: null, originalUrl: null, format: null, tags: [] });
     setEnhancedUrl(null);
     window.location.hash = sectionId;
     setView('landing');
@@ -1384,28 +1378,16 @@ function App() {
             </div>
 
             <div className="preview-panel">
-              <div className="score-boards">
-                {imageState.originalUrl && (
-                  <div className="score-card original">
-                    <span className="score-label">Original Appeal Score</span>
-                    <span className="score-value error">{imageState.originalScore}<small>/100</small></span>
-                  </div>
-                )}
-                {enhancedUrl && (
-                  <motion.div initial={{scale:0.9, opacity:0}} animate={{scale:1, opacity:1}} className="flex flex-col gap-4">
-                    <div className="score-card enhanced">
-                      <span className="score-label">Enhanced Appeal Score</span>
-                      <span className="score-value success">98<small>/100</small></span>
-                    </div>
-                    <button 
-                      onClick={handleDownload}
-                      className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-95"
-                    >
-                      <Download size={18} /> Download Enhanced Photo
-                    </button>
-                  </motion.div>
-                )}
-              </div>
+              {enhancedUrl && (
+                <motion.div initial={{scale:0.9, opacity:0}} animate={{scale:1, opacity:1}} className="flex justify-end mb-4">
+                  <button 
+                    onClick={handleDownload}
+                    className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-95"
+                  >
+                    <Download size={20} /> Download Enhanced Photo
+                  </button>
+                </motion.div>
+              )}
 
               <div className="image-comparison">
                 {imageState.originalUrl && (
