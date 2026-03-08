@@ -1432,8 +1432,8 @@ function App() {
                 {isProcessing && (
                   <div className="processing-overlay">
                     <div className="spinner"></div>
-                    <h3>AI Processing...</h3>
-                    <p>Detecting walls, floors, and object boundaries to apply Generative AI seamlessly.</p>
+                    <h3>Cloudinary AI processing...</h3>
+                    <p>Detecting walls, floors, and object boundaries to apply Cloudinary Generative AI seamlessly.</p>
                   </div>
                 )}
               </div>
