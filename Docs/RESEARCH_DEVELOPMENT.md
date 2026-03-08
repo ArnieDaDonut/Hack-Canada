@@ -1,4 +1,4 @@
-# Research & Development 🧪
+# Research & Development
 
 This project involves significant R&D in Generative AI for real estate and multi-source data integration.
 
