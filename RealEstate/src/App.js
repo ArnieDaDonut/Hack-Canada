@@ -33,6 +33,11 @@ function MapResizer() {
   return null;
 }
 
+const cleanDescription = (text) => {
+  if (!text) return '';
+  return text.replace(/\*+\s*SAMPLE DATA\s*\*+/g, '').trim();
+};
+
 function App() {
   const [config, setConfig] = useState({
     cloudName: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME || localStorage.getItem('estate_cloud_name') || '',
@@ -105,7 +110,7 @@ function App() {
       if (filterSearch) {
         const query = filterSearch.toLowerCase();
         const addressMatch = `${listing.address?.streetNumber} ${listing.address?.streetName}`.toLowerCase().includes(query);
-        const descMatch = (listing.details?.description || '').toLowerCase().includes(query);
+        const descMatch = cleanDescription(listing.details?.description).toLowerCase().includes(query);
         if (!addressMatch && !descMatch) return false;
       }
 
@@ -666,7 +671,7 @@ function App() {
                     <div>
                       <h4 className="font-bold mb-3 uppercase tracking-widest text-[10px] text-text-main/50">Property Details</h4>
                       <p className="text-sm text-text-main/80 leading-relaxed bg-white p-4 rounded-xl shadow-sm border border-neutral-warm">
-                        {selectedListing.details?.description || 'No description available.'}
+                        {cleanDescription(selectedListing.details?.description) || 'No description available.'}
                       </p>
                     </div>
 
