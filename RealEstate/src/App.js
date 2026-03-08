@@ -472,13 +472,7 @@ function App() {
             >
               Create Listing
             </button>
-            <button
-              onClick={() => setShowConfig(true)}
-              className="p-2 text-text-main/50 hover:text-primary transition-colors"
-              title="Cloudinary Settings"
-            >
-              <Settings size={20} />
-            </button>
+
             <label className="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-lg shadow-primary/20 transition-all active:scale-95 cursor-pointer inline-flex">
               Enhance My First Photo
               <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} disabled={showConfig} />
