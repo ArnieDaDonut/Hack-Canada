@@ -1,0 +1,101 @@
+﻿
+> my-app@0.1.0 build
+> vite build
+
+[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32mΓ£ô[39m 1 modules transformed.
+node.exe : 
+[31mΓ£ù[39m Build 
+failed in 54ms
+At C:\Program Files\nod
+ejs\npm.ps1:29 char:3
++   & $NODE_EXE 
+$NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: ([31mΓ£ù[39m   
+  Build failed in 5    
+4ms:String) [], Re    
+moteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+[31merror during 
+build:
+[31m[vite:build-html] 
+src/index.jsx (8:2): 
+Expression expected 
+(Note that you need 
+plugins to import 
+files that are not 
+JavaScript)[31m
+file: [36mC:/Users/Niv
+ea/Documents/HackCanada
+/Hack-Canada/RealEstate
+/src/index.jsx:8:2 (C:/
+Users/Nivea/Documents/H
+ackCanada/Hack-Canada/R
+ealEstate/index.html)[
+31m
+[33m
+ 6: const root = ReactD
+OM.createRoot(document.
+getElementById('root'))
+;
+ 7: root.render(
+ 8:   
+<React.StrictMode>
+      ^
+ 9:     <App />
+10:   
+</React.StrictMode>
+[31m
+    at getRollupError (
+file:///C:/Users/Nivea/
+Documents/HackCanada/Ha
+ck-Canada/RealEstate/no
+de_modules/rollup/dist/
+es/shared/parseAst.js:4
+02:41)
+    at 
+ParseError.initialise (
+file:///C:/Users/Nivea/
+Documents/HackCanada/Ha
+ck-Canada/RealEstate/no
+de_modules/rollup/dist/
+es/shared/node-entry.js
+:14465:28)
+    at convertNode (fil
+e:///C:/Users/Nivea/Doc
+uments/HackCanada/Hack-
+Canada/RealEstate/node_
+modules/rollup/dist/es/
+shared/node-entry.js:16
+437:10)
+    at convertProgram (
+file:///C:/Users/Nivea/
+Documents/HackCanada/Ha
+ck-Canada/RealEstate/no
+de_modules/rollup/dist/
+es/shared/node-entry.js
+:15677:12)
+    at 
+Module.setSource (file:
+///C:/Users/Nivea/Docum
+ents/HackCanada/Hack-Ca
+nada/RealEstate/node_mo
+dules/rollup/dist/es/sh
+ared/node-entry.js:1739
+2:24)
+    at async ModuleLoad
+er.addModuleSource (fil
+e:///C:/Users/Nivea/Doc
+uments/HackCanada/Hack-
+Canada/RealEstate/node_
+modules/rollup/dist/es/
+shared/node-entry.js:21
+497:13)[39m
