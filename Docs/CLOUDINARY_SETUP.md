@@ -1,4 +1,4 @@
-# Environment & Cloudinary Setup ☁️
+# Environment & Cloudinary Setup
 
 Estator AI relies on Cloudinary for its generative AI features. This guide covers the configuration required to run the project.
 
