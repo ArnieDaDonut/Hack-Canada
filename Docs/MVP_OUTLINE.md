@@ -1,4 +1,4 @@
-# MVP Outline 📦
+# MVP Outline
 
 The Estator AI MVP (Minimum Viable Product) focus is on solving the immediate friction in real estate marketing: slow and expensive photo editing.
 
