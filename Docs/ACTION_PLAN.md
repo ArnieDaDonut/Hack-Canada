@@ -1,4 +1,4 @@
-# Action Plan 🚀
+# Action Plan
 
 This document outlines the development phases and roadmap for Estator AI.
 
