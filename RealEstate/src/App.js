@@ -468,6 +468,16 @@ function App() {
     setView('landing');
   };
 
+  const handleContinueEditing = async () => {
+    if (!enhancedUrl) return;
+    setIsProcessing(true);
+    // Fetch the current enhanced image and re-upload it as the new "original"
+    await uploadToCloudinary(enhancedUrl);
+    setEnhancedUrl(null);
+    // Reset specific mode prompts to allow a fresh start on the new base
+    // but keep removeText as it might be useful to refine further
+  };
+
   const handleDownload = async () => {
     if (!enhancedUrl) return;
     try {
@@ -1542,7 +1552,13 @@ function App() {
 
                 <div className="preview-panel">
                   {enhancedUrl && (
-                    <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="flex justify-end mb-4">
+                    <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="flex flex-col sm:flex-row justify-end gap-3 mb-4">
+                      <button
+                        onClick={handleContinueEditing}
+                        className="bg-accent hover:opacity-90 text-white px-6 py-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95"
+                      >
+                        <Wand2 size={20} /> Keep & Refine
+                      </button>
                       <button
                         onClick={handleDownload}
                         className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-95"
