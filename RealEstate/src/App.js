@@ -46,11 +46,67 @@ const SAMPLE_LISTINGS = [
     "map": { "latitude": 41.769856, "longitude": -87.6678205 },
     "images": ["sample/IMG-MRD10721637_3.jpg", "sample/IMG-MRD10721637_5.jpg"],
     "details": {
-      "description": "**** SAMPLE DATA **** Amazing opportunity to own a two unit building at an affordable price. Rent out one unit and live RENT FREE! **** SAMPLE DATA ****",
+      "description": "Amazing opportunity to own a two unit building at an affordable price. Rent out one unit and live RENT FREE!",
       "numBathrooms": 2,
       "numBedrooms": 5,
       "propertyType": "Residential Income",
       "style": "Other"
+    }
+  },
+  {
+    "mlsNumber": "MRD10721638",
+    "listPrice": 450000,
+    "address": { "streetNumber": "123", "streetName": "Michigan Ave", "city": "Chicago", "state": "IL" },
+    "map": { "latitude": 41.8885, "longitude": -87.6245 },
+    "images": ["sample/IMG-MRD10721637_0.jpg"],
+    "details": {
+      "description": "Luxury condo in the heart of the Magnificent Mile. Unbeatable city views and modern amenities.",
+      "numBathrooms": 2,
+      "numBedrooms": 2,
+      "propertyType": "Condo",
+      "style": "Modern"
+    }
+  },
+  {
+    "mlsNumber": "MRD10721639",
+    "listPrice": 275000,
+    "address": { "streetNumber": "456", "streetName": "Wacker Dr", "city": "Chicago", "state": "IL" },
+    "map": { "latitude": 41.8817, "longitude": -87.6375 },
+    "images": ["sample/IMG-MRD10721637_1.jpg"],
+    "details": {
+      "description": "Spacious loft with industrial charm. Exposed brick and high ceilings throughout.",
+      "numBathrooms": 1,
+      "numBedrooms": 1,
+      "propertyType": "Loft",
+      "style": "Industrial"
+    }
+  },
+  {
+    "mlsNumber": "MRD10721640",
+    "listPrice": 850000,
+    "address": { "streetNumber": "789", "streetName": "Lake Shore Dr", "city": "Chicago", "state": "IL" },
+    "map": { "latitude": 41.9056, "longitude": -87.6234 },
+    "images": ["sample/IMG-MRD10721637_2.jpg"],
+    "details": {
+      "description": "Elegant waterfront estate with private lake access. Classic Chicago architecture at its finest.",
+      "numBathrooms": 4,
+      "numBedrooms": 4,
+      "propertyType": "Detached",
+      "style": "Victorian"
+    }
+  },
+  {
+    "mlsNumber": "MRD10721641",
+    "listPrice": 320000,
+    "address": { "streetNumber": "321", "streetName": "Randolph St", "city": "Chicago", "state": "IL" },
+    "map": { "latitude": 41.8845, "longitude": -87.6475 },
+    "images": ["sample/IMG-MRD10721637_6.jpg"],
+    "details": {
+      "description": "Modern studio in the vibrant West Loop. Perfect for urban living and close to top dining.",
+      "numBathrooms": 1,
+      "numBedrooms": 0,
+      "propertyType": "Studio",
+      "style": "Contemporary"
     }
   }
 ];
