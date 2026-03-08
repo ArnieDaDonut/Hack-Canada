@@ -22,8 +22,8 @@ This document outlines the development phases and roadmap for Estator AI.
 - [x] AI-powered visual analysis of uploaded photos.
 - [x] Auto-generation of professional marketing descriptions.
 
-## Phase 5: Deployment & Optimization (Ongoing)
+## Phase 5: Deployment & Optimization (Completed)
 - [x] Vercel CI/CD pipeline setup via `vercel.json`.
 - [x] Performance optimization (Lazy loading, image compression).
-- [ ] Comprehensive mobile-first refactor and responsive testing.
-- [ ] User authentication and "Saved Enhancements" database.
+- [x] Comprehensive mobile-first refactor and responsive testing.
+- [x] User authentication and "Saved Enhancements" database.
