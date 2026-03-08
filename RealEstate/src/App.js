@@ -453,11 +453,11 @@ function App() {
 
       <header className="sticky top-0 z-50 w-full border-b border-neutral-warm bg-white/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-[1920px] items-center justify-between px-6 py-4 lg:px-10">
-          <div className="flex items-center gap-2 group cursor-pointer" onClick={(e) => handleNavClick(e, 'top')}>
-            <div className="bg-primary p-1.5 rounded-lg text-white">
-              <span className="material-symbols-outlined block text-2xl">apartment</span>
+          <div className="flex items-center gap-3 group cursor-pointer" onClick={(e) => handleNavClick(e, 'top')}>
+            <div className="h-10 w-10 flex items-center justify-center -ml-1 overflow-visible">
+              <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Estator Logo" className="w-[180%] max-w-none transform scale-150" />
             </div>
-            <h2 className="text-text-main text-xl font-bold tracking-tight">Estator</h2>
+            <h2 className="text-text-main text-xl font-bold tracking-tight z-10">Estator</h2>
           </div>
           <nav className="hidden md:flex items-center gap-10">
             <a className="text-text-main/80 text-sm font-semibold hover:text-primary transition-colors" href="#features" onClick={(e) => handleNavClick(e, 'features')}>Features</a>
