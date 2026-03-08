@@ -160,7 +160,7 @@ function App() {
   };
 
   useEffect(() => {
-    if (view === 'chicago-map') {
+    if (view === 'available-listings') {
       loadChicagoListings();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -461,26 +461,26 @@ function App() {
 
       <header className="sticky top-0 z-50 w-full border-b border-neutral-warm bg-white/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-[1920px] items-center justify-between px-6 py-4 lg:px-10">
-          <div className="flex items-center gap-3 group cursor-pointer" onClick={(e) => handleNavClick(e, 'top')}>
-            <div className="h-10 w-10 flex items-center justify-center -ml-1 overflow-visible">
-              <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Estator Logo" className="w-[180%] max-w-none transform scale-150" />
+          <div className="flex items-center gap-2 group cursor-pointer" onClick={(e) => handleNavClick(e, 'top')}>
+            <div className="bg-primary p-1.5 rounded-lg text-white">
+              <span className="material-symbols-outlined block text-2xl">apartment</span>
             </div>
-            <h2 className="text-text-main text-xl font-bold tracking-tight z-10">Estator</h2>
+            <h2 className="text-text-main text-xl font-bold tracking-tight">Estator</h2>
           </div>
           <nav className="hidden md:flex items-center gap-10">
             <a className="text-text-main/80 text-sm font-semibold hover:text-primary transition-colors" href="#features" onClick={(e) => handleNavClick(e, 'features')}>Features</a>
             <a className="text-text-main/80 text-sm font-semibold hover:text-primary transition-colors" href="#process" onClick={(e) => handleNavClick(e, 'process')}>Process</a>
-            <button className={`text-text-main/80 text-sm font-semibold hover:text-primary transition-colors ${view === 'chicago-map' ? 'text-primary' : ''}`} onClick={() => setView('chicago-map')}>Chicago Map <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full ml-1 uppercase tracking-widest">New</span></button>
+            <button className={`text-text-main/80 text-sm font-semibold hover:text-primary transition-colors ${view === 'available-listings' ? 'text-primary' : ''}`} onClick={() => setView('available-listings')}>Available Listings <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full ml-1 uppercase tracking-widest">Soon</span></button>
             <a className="text-text-main/80 text-sm font-semibold hover:text-primary transition-colors" href="#testimonials" onClick={(e) => handleNavClick(e, 'testimonials')}>Testimonials</a>
           </nav>
-          <div className="flex items-center gap-4">
+
+          <div className="flex-1 flex items-center justify-end gap-4">
             <button
               onClick={startListing}
               className="text-text-main/80 text-sm font-bold hover:text-primary transition-colors hidden sm:block"
             >
               Create Listing
             </button>
-
             <label className="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-lg shadow-primary/20 transition-all active:scale-95 cursor-pointer inline-flex">
               Enhance My First Photo
               <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} disabled={showConfig} />
@@ -490,7 +490,7 @@ function App() {
       </header>
 
       <main>
-        {view === 'chicago-map' && (
+        {view === 'available-listings' && (
           <div className="h-[calc(100vh-80px)] w-full flex relative overflow-hidden bg-neutral-soft">
             <div className="flex-1 h-full z-0 relative">
               {loadingMap && (
@@ -1540,9 +1540,9 @@ function App() {
           <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/30">
             <p>© 2024 Estator AI. All rights reserved.</p>
             <div className="flex gap-8">
-                <a href="/" className="hover:text-white">Terms of Service</a>
-                <a href="/" className="hover:text-white">Cookie Policy</a>
-                <a href="/" className="hover:text-white">Security</a>
+              <a href="/" className="hover:text-white">Terms of Service</a>
+              <a href="/" className="hover:text-white">Cookie Policy</a>
+              <a href="/" className="hover:text-white">Security</a>
             </div>
           </div>
         </div>
