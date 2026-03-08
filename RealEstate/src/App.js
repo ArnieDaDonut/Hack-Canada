@@ -31,7 +31,7 @@ function App() {
     uploadPreset: process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET || localStorage.getItem('estate_upload_preset') || ''
   });
 
-  const [showConfig, setShowConfig] = useState(!config.cloudName || !config.uploadPreset);
+  const [showConfig, setShowConfig] = useState(false);
   const [imageState, setImageState] = useState(() => {
     const saved = sessionStorage.getItem('estate_imageState');
     return saved ? JSON.parse(saved) : {
@@ -471,6 +471,13 @@ function App() {
               className="text-text-main/80 text-sm font-bold hover:text-primary transition-colors hidden sm:block"
             >
               Create Listing
+            </button>
+            <button
+              onClick={() => setShowConfig(true)}
+              className="p-2 text-text-main/50 hover:text-primary transition-colors"
+              title="Cloudinary Settings"
+            >
+              <Settings size={20} />
             </button>
             <label className="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-lg shadow-primary/20 transition-all active:scale-95 cursor-pointer inline-flex">
               Enhance My First Photo
