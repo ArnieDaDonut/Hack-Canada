@@ -84,6 +84,43 @@ function App() {
   const [selectedListing, setSelectedListing] = useState(null);
   const [loadingMap, setLoadingMap] = useState(false);
 
+  // Filters State
+  const [filterSearch, setFilterSearch] = useState('');
+  const [filterMinPrice, setFilterMinPrice] = useState('');
+  const [filterMaxPrice, setFilterMaxPrice] = useState('');
+  const [filterBeds, setFilterBeds] = useState('any');
+  const [filterBaths, setFilterBaths] = useState('any');
+  const [filterType, setFilterType] = useState('any');
+  const [filterMinSqft, setFilterMinSqft] = useState('');
+
+  const filteredListings = React.useMemo(() => {
+    return chicagoListings.filter(listing => {
+      // Keyword Search
+      if (filterSearch) {
+        const query = filterSearch.toLowerCase();
+        const addressMatch = `${listing.address?.streetNumber} ${listing.address?.streetName}`.toLowerCase().includes(query);
+        const descMatch = (listing.details?.description || '').toLowerCase().includes(query);
+        if (!addressMatch && !descMatch) return false;
+      }
+      
+      // Price
+      if (filterMinPrice && listing.listPrice < parseInt(filterMinPrice)) return false;
+      if (filterMaxPrice && listing.listPrice > parseInt(filterMaxPrice)) return false;
+      
+      // Beds / Baths
+      if (filterBeds !== 'any' && (listing.details?.numBedrooms || 0) < parseInt(filterBeds)) return false;
+      if (filterBaths !== 'any' && (listing.details?.numBathrooms || 0) < parseInt(filterBaths)) return false;
+      
+      // Type
+      if (filterType !== 'any' && listing.details?.propertyType !== filterType) return false;
+      
+      // Sqft
+      if (filterMinSqft && parseInt(listing.details?.sqft || 0) < parseInt(filterMinSqft)) return false;
+
+      return true;
+    });
+  }, [chicagoListings, filterSearch, filterMinPrice, filterMaxPrice, filterBeds, filterBaths, filterType, filterMinSqft]);
+
   useEffect(() => {
     sessionStorage.setItem('estate_imageState', JSON.stringify(imageState));
   }, [imageState]);
@@ -432,7 +469,7 @@ function App() {
                   updateWhenIdle={true}
                   updateWhenZooming={false}
                 />
-                {chicagoListings.map(listing => {
+                {filteredListings.map(listing => {
                   if (!listing.map || !listing.map.latitude || !listing.map.longitude) return null;
                   return (
                     <Marker 
@@ -448,6 +485,81 @@ function App() {
                   );
                 })}
               </MapContainer>
+            </div>
+
+            {/* Right Side Filter Panel */}
+            <div className="w-80 h-full bg-white border-l border-neutral-warm flex flex-col shadow-xl z-10 relative overflow-y-auto hidden md:flex">
+              <div className="p-5 border-b border-neutral-warm sticky top-0 bg-white z-10">
+                <h3 className="font-bold text-lg text-text-main flex items-center gap-2">
+                  <span className="material-symbols-outlined text-primary">filter_alt</span> Search Filters
+                </h3>
+                <p className="text-sm font-bold text-text-main/50 mt-1">{filteredListings.length} properties found</p>
+              </div>
+
+              <div className="p-5 space-y-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-text-main/70 uppercase tracking-wider">Keyword Search</label>
+                  <input type="text" placeholder="Address, city, or features..." value={filterSearch} onChange={e => setFilterSearch(e.target.value)} className="w-full bg-neutral-soft border border-neutral-warm rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all" />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-text-main/70 uppercase tracking-wider">Price Range</label>
+                  <div className="flex gap-2">
+                    <input type="number" placeholder="Min" value={filterMinPrice} onChange={e => setFilterMinPrice(e.target.value)} className="w-full bg-neutral-soft border border-neutral-warm rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all" />
+                    <input type="number" placeholder="Max" value={filterMaxPrice} onChange={e => setFilterMaxPrice(e.target.value)} className="w-full bg-neutral-soft border border-neutral-warm rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all" />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-text-main/70 uppercase tracking-wider">Bedrooms</label>
+                    <select value={filterBeds} onChange={e => setFilterBeds(e.target.value)} className="w-full bg-neutral-soft border border-neutral-warm rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                      <option value="any">Any</option>
+                      <option value="1">1+</option>
+                      <option value="2">2+</option>
+                      <option value="3">3+</option>
+                      <option value="4">4+</option>
+                      <option value="5">5+</option>
+                    </select>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-text-main/70 uppercase tracking-wider">Bathrooms</label>
+                    <select value={filterBaths} onChange={e => setFilterBaths(e.target.value)} className="w-full bg-neutral-soft border border-neutral-warm rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                      <option value="any">Any</option>
+                      <option value="1">1+</option>
+                      <option value="2">2+</option>
+                      <option value="3">3+</option>
+                      <option value="4">4+</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-text-main/70 uppercase tracking-wider">Property Type</label>
+                  <select value={filterType} onChange={e => setFilterType(e.target.value)} className="w-full bg-neutral-soft border border-neutral-warm rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                    <option value="any">All Types</option>
+                    <option value="Residential Freehold">Residential Freehold</option>
+                    <option value="Condominium">Condominium</option>
+                    <option value="Commercial">Commercial</option>
+                    <option value="Residential Income">Residential Income</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-text-main/70 uppercase tracking-wider">Square Footage</label>
+                  <input type="number" placeholder="Min Sqft" value={filterMinSqft} onChange={e => setFilterMinSqft(e.target.value)} className="w-full bg-neutral-soft border border-neutral-warm rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all" />
+                </div>
+
+                <button 
+                  onClick={() => {
+                    setFilterSearch(''); setFilterMinPrice(''); setFilterMaxPrice('');
+                    setFilterBeds('any'); setFilterBaths('any'); setFilterType('any'); setFilterMinSqft('');
+                  }}
+                  className="w-full mt-4 bg-neutral-warm/50 hover:bg-neutral-warm text-text-main/80 font-bold py-2 rounded-lg text-sm transition-colors"
+                >
+                  Clear Filters
+                </button>
+              </div>
             </div>
 
             {/* Listing Details Drawer */}
@@ -476,6 +588,30 @@ function App() {
                       <span className="flex items-center gap-1"><span className="material-symbols-outlined text-base">bed</span> {selectedListing.details?.numBedrooms || 0} Beds</span>
                       <span className="flex items-center gap-1"><span className="material-symbols-outlined text-base">shower</span> {selectedListing.details?.numBathrooms || 0} Baths</span>
                       <span className="flex items-center gap-1"><span className="material-symbols-outlined text-base">straighten</span> {selectedListing.details?.sqft || 'N/A'} Sqft</span>
+                    </div>
+
+                    {/* Dynamic Listing Subtags */}
+                    <div className="flex flex-wrap gap-2">
+                      {selectedListing.details?.propertyType && (
+                        <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold border border-primary/20">
+                          {selectedListing.details.propertyType}
+                        </span>
+                      )}
+                      {selectedListing.details?.style && (
+                        <span className="bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full text-xs font-bold border border-emerald-200">
+                          {selectedListing.details.style}
+                        </span>
+                      )}
+                      {selectedListing.details?.heating && (
+                        <span className="bg-amber-50 text-amber-600 px-3 py-1 rounded-full text-xs font-bold border border-amber-200">
+                          🌡️ {selectedListing.details.heating}
+                        </span>
+                      )}
+                      {selectedListing.details?.basement1 && (
+                        <span className="bg-purple-50 text-purple-600 px-3 py-1 rounded-full text-xs font-bold border border-purple-200">
+                          Basement: {selectedListing.details.basement1}
+                        </span>
+                      )}
                     </div>
 
                     <div>
