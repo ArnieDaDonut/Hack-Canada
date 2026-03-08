@@ -460,17 +460,20 @@ function App() {
       </AnimatePresence>
 
       <header className="sticky top-0 z-50 w-full border-b border-neutral-warm bg-white/90 backdrop-blur-md">
-        <div className="mx-auto flex max-w-[1920px] items-center justify-between px-6 py-4 lg:px-10">
-          <div className="flex items-center gap-2 group cursor-pointer" onClick={(e) => handleNavClick(e, 'top')}>
-            <div className="bg-primary p-1.5 rounded-lg text-white">
-              <span className="material-symbols-outlined block text-2xl">apartment</span>
+        <div className="mx-auto flex max-w-[1920px] items-center px-6 py-4 lg:px-10">
+          <div className="flex-1 flex items-center">
+            <div className="flex items-center gap-2 group cursor-pointer" onClick={(e) => handleNavClick(e, 'top')}>
+              <div className="bg-primary p-1.5 rounded-lg text-white">
+                <span className="material-symbols-outlined block text-2xl">apartment</span>
+              </div>
+              <h2 className="text-text-main text-xl font-bold tracking-tight">Estator</h2>
             </div>
-            <h2 className="text-text-main text-xl font-bold tracking-tight">Estator</h2>
           </div>
-          <nav className="hidden md:flex items-center gap-10">
+
+          <nav className="hidden md:flex items-center justify-center gap-10">
             <a className="text-text-main/80 text-sm font-semibold hover:text-primary transition-colors" href="#features" onClick={(e) => handleNavClick(e, 'features')}>Features</a>
             <a className="text-text-main/80 text-sm font-semibold hover:text-primary transition-colors" href="#process" onClick={(e) => handleNavClick(e, 'process')}>Process</a>
-            <button className={`text-text-main/80 text-sm font-semibold hover:text-primary transition-colors ${view === 'available-listings' ? 'text-primary' : ''}`} onClick={() => setView('available-listings')}>Available Listings <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full ml-1 uppercase tracking-widest">Soon</span></button>
+            <button className={`text-text-main/80 text-sm font-semibold hover:text-primary transition-colors ${view === 'available-listings' ? 'text-primary' : ''}`} onClick={() => setView('available-listings')}>Available Listings</button>
             <a className="text-text-main/80 text-sm font-semibold hover:text-primary transition-colors" href="#testimonials" onClick={(e) => handleNavClick(e, 'testimonials')}>Testimonials</a>
           </nav>
 
