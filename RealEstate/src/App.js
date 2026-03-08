@@ -140,7 +140,7 @@ function App() {
     try {
       const res = await fetch('https://api.repliers.io/listings?city=Chicago&resultsPerPage=40', {
         headers: {
-          'REPLIERS-API-KEY': 'eB3sU7U2IfIcuNsvK68zX865OSmhxv'
+          'REPLIERS-API-KEY': process.env.REACT_APP_REPLIERS_API_KEY
         }
       });
       const data = await res.json();
