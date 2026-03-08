@@ -64,7 +64,10 @@ function App() {
     price: '',
     sqft: '',
     contact: '',
-    enhanceAll: false
+    enhanceAll: true,
+    generatedDescription: '',
+    strongPoints: [],
+    isGenerating: false
   });
   const [generatedListing, setGeneratedListing] = useState(null);
   const [showEmailModal, setShowEmailModal] = useState(false);

@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd RealEstate && npm run build",
+  "outputDirectory": "RealEstate/build",
+  "framework": "create-react-app"
+}
