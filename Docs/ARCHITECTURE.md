@@ -1,4 +1,4 @@
-# Project Architecture 🏗️
+# Project Architecture
 
 Estator AI is a Single Page Application (SPA) built with React, focusing on a fluid, state-driven user experience.
 
@@ -15,7 +15,7 @@ The app uses a centralized `view` state in `App.js` to manage navigation without
 ```mermaid
 graph TD
     A[Landing Page] -->|Upload| B(AI Studio)
-    A -->|Nav| C(Chicago Map)
+    A -->|Nav| C(Available Listing)
     A -->|Nav| D(Listing Builder)
     B -->|Compare| E[Cloudinary API]
     D -->|Analyze| F[Listing Description Generation]
