@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Upload, Home, Image as ImageIcon, Wand2, ArrowRight, Settings, Eraser, Crop, Zap, CheckCircle2, TrendingUp, Tags, ChevronLeft, ChevronRight, MapPin, X, Download } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Home, Wand2, Settings, Zap, CheckCircle2, Tags, ChevronLeft, ChevronRight, X, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import L from 'leaflet';
@@ -45,8 +45,6 @@ function App() {
   const [enhancedUrl, setEnhancedUrl] = useState(() => sessionStorage.getItem('estate_enhancedUrl') || null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [activeTab, setActiveTab] = useState(() => sessionStorage.getItem('estate_activeTab') || 'clutter');
-  const [enabledFeatures, setEnabledFeatures] = useState(false);
-  const [sliderPos, setSliderPos] = useState(50);
   const [landingSliderPos, setLandingSliderPos] = useState(50);
 
   const [view, setView] = useState(() => sessionStorage.getItem('estate_view') || 'landing');
@@ -69,8 +67,6 @@ function App() {
     strongPoints: [],
     isGenerating: false
   });
-  const [generatedListing, setGeneratedListing] = useState(null);
-  const [showEmailModal, setShowEmailModal] = useState(false);
 
   const [prompts, setPrompts] = useState(() => {
     const saved = sessionStorage.getItem('estate_prompts');
@@ -159,6 +155,7 @@ function App() {
     if (view === 'chicago-map') {
       loadChicagoListings();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [view]);
 
   const saveConfig = (e) => {
@@ -1082,16 +1079,16 @@ function App() {
                     </div>
                     <div className="flex items-center gap-4 pt-4">
                       <div className="flex -space-x-3">
-                        <img className="h-10 w-10 rounded-full border-2 border-white object-cover" data-alt="Portrait of a male real estate agent" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXxKpdI-WUN6r1N7BejUkzka0KfSiequiuEqa5jrVjS5CqCa69lr8jesshOroSBGA3_xlEEpfVJn8MMUSlK-ZOzxb8KUVVLET9E49CA0BJmxJx_jXHd77jXmzocYM67xmdJIYwD-zJAqmJUhjr7Rx23XBYXPrrQprI3P_1E5gJGPX-6RPzHMrHOpGBS3TkWBqrg3g0DPZPOz6fJDsKjWOsgCepoG-ShS4zNUI_0Lhovw-0XlDVEEECLbx30eXzuAcLkALkSj987Cc" />
-                        <img className="h-10 w-10 rounded-full border-2 border-white object-cover" data-alt="Portrait of a female realtor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhzFcv6DuZI0eJo0b9lZChC9koBhAt5NyDSwLXMxo7ylVCvw6CvALRIa1UjNnfATjhbeYuypKFGzLtMHf-1isngXNm4I2D76ViYN__cgy3-OJtwOeonZILnXne0Z5ccMOxBRKeu716yUTc9DewjYPbwOlFpXsqd5RIseiA6WeOSR_ozo9r8fzXq7tYMqB5SEu8r53K4akuno6mFmsON5iEQ-Km8DuH3fYp-aCWW93oUFqfnThzX-TdpGlt7V30CLhN_ORflHV1kM0" />
-                        <img className="h-10 w-10 rounded-full border-2 border-white object-cover" data-alt="Portrait of a professional broker" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDl_LqwhKSyK2X7QwBWRw8V4NMACHPpJJLOd-zbrSn8GBIvXvDuZK7H-k4_WEbd2RX_rtLNakdF-Q-V-qf_rkG3SeCdHdJVI20nSQEXVTfxeENelb-V6IAsJ80YJRIvLcAMSfZXvQ0scdQEXV2yuaKmBye03CDFzmRoe1MMRPk3qODyG1w4eCLpDrDdjCcGp5IZQQv4-7GBNPMG7pCZ1wLYa0tB-bAbYNYZbT5A_evurKPLhPQ9-F7E4RbHUIAzruZx_BC6aN8cAEQ" />
+                        <img className="h-10 w-10 rounded-full border-2 border-white object-cover" alt="Portrait of a male real estate agent" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXxKpdI-WUN6r1N7BejUkzka0KfSiequiuEqa5jrVjS5CqCa69lr8jesshOroSBGA3_xlEEpfVJn8MMUSlK-ZOzxb8KUVVLET9E49CA0BJmxJx_jXHd77jXmzocYM67xmdJIYwD-zJAqmJUhjr7Rx23XBYXPrrQprI3P_1E5gJGPX-6RPzHMrHOpGBS3TkWBqrg3g0DPZPOz6fJDsKjWOsgCepoG-ShS4zNUI_0Lhovw-0XlDVEEECLbx30eXzuAcLkALkSj987Cc" />
+                        <img className="h-10 w-10 rounded-full border-2 border-white object-cover" alt="Portrait of a female realtor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhzFcv6DuZI0eJo0b9lZChC9koBhAt5NyDSwLXMxo7ylVCvw6CvALRIa1UjNnfATjhbeYuypKFGzLtMHf-1isngXNm4I2D76ViYN__cgy3-OJtwOeonZILnXne0Z5ccMOxBRKeu716yUTc9DewjYPbwOlFpXsqd5RIseiA6WeOSR_ozo9r8fzXq7tYMqB5SEu8r53K4akuno6mFmsON5iEQ-Km8DuH3fYp-aCWW93oUFqfnThzX-TdpGlt7V30CLhN_ORflHV1kM0" />
+                        <img className="h-10 w-10 rounded-full border-2 border-white object-cover" alt="Portrait of a professional broker" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDl_LqwhKSyK2X7QwBWRw8V4NMACHPpJJLOd-zbrSn8GBIvXvDuZK7H-k4_WEbd2RX_rtLNakdF-Q-V-qf_rkG3SeCdHdJVI20nSQEXVTfxeENelb-V6IAsJ80YJRIvLcAMSfZXvQ0scdQEXV2yuaKmBye03CDFzmRoe1MMRPk3qODyG1w4eCLpDrDdjCcGp5IZQQv4-7GBNPMG7pCZ1wLYa0tB-bAbYNYZbT5A_evurKPLhPQ9-F7E4RbHUIAzruZx_BC6aN8cAEQ" />
                       </div>
                       <p className="text-sm font-medium text-text-main/60">Trusted by 5,000+ Real Estate Pros</p>
                     </div>
                   </div>
                   <div className="relative">
                     <div className="aspect-[4/3] w-full overflow-hidden rounded-3xl bg-neutral-soft shadow-2xl">
-                      <img className="h-full w-full object-cover" data-alt="Modern high-end luxury kitchen interior" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDps6nyNS2lXKvWG8Tx4AK98dVVKDAdYBV54cJ5v4LMVO3P9f48puemQmYCEABNnjFe-IyX21mDA-57k2Aj0T5d3kBDOcOSMeMsexA_imHeePkrePWzRvm5sv6oOWh0e4k8IXmBSZPvZb1hfsBkKgfJs6tm_1qaUJpnCXBK6PL3omzMsiV1RFA5fG-Zxe77jzQv5kN1snkV54g3olQEIFeIWyH21kkNu00nI7p6zQpNWSK0FnfpOvKDPjRHDd7KEcT8K07mPveE6JM" />
+                      <img className="h-full w-full object-cover" alt="Modern high-end luxury kitchen interior" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDps6nyNS2lXKvWG8Tx4AK98dVVKDAdYBV54cJ5v4LMVO3P9f48puemQmYCEABNnjFe-IyX21mDA-57k2Aj0T5d3kBDOcOSMeMsexA_imHeePkrePWzRvm5sv6oOWh0e4k8IXmBSZPvZb1hfsBkKgfJs6tm_1qaUJpnCXBK6PL3omzMsiV1RFA5fG-Zxe77jzQv5kN1snkV54g3olQEIFeIWyH21kkNu00nI7p6zQpNWSK0FnfpOvKDPjRHDd7KEcT8K07mPveE6JM" />
                     </div>
                     <div className="absolute -bottom-6 -left-6 max-w-[200px] rounded-2xl bg-white p-4 shadow-xl border border-neutral-warm">
                       <div className="flex items-center gap-2 mb-2">
@@ -1255,7 +1252,7 @@ function App() {
                           "Estator has completely changed our listing workflow. We save thousands on professional photographers and our listings get 3x more engagement than before."
                         </p>
                         <div className="flex items-center gap-4">
-                          <img className="w-12 h-12 rounded-full object-cover" data-alt="Portrait of a successful female real estate broker" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBstpHklCHSfAJY5rA_dTqhHDo9S-ysWOJxEQnonrnGOhIzW-uqSEaR_fVlkyYNE3btVWEcb3QhL_OUvNNWk_53TORuCmgyYyvceJwv2ywx1kpK0mbnsv0FAp2WgndsAmQYp4_lo32XhkqFY0m4MZDmUk4DA6JzPhgxyUZU04RAJs14XgNha7UdpUw_tcjs09BH9ViU37xPL8mPBYswzISsEOJeRykny7_d_uuzbSNuMP32ZWwosjs4--4jAbO2fnkcia2vEEjG6Jo" />
+                          <img className="w-12 h-12 rounded-full object-cover" alt="Portrait of a successful female real estate broker" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBstpHklCHSfAJY5rA_dTqhHDo9S-ysWOJxEQnonrnGOhIzW-uqSEaR_fVlkyYNE3btVWEcb3QhL_OUvNNWk_53TORuCmgyYyvceJwv2ywx1kpK0mbnsv0FAp2WgndsAmQYp4_lo32XhkqFY0m4MZDmUk4DA6JzPhgxyUZU04RAJs14XgNha7UdpUw_tcjs09BH9ViU37xPL8mPBYswzISsEOJeRykny7_d_uuzbSNuMP32ZWwosjs4--4jAbO2fnkcia2vEEjG6Jo" />
                           <div>
                             <p className="font-bold text-text-main">Sarah Jenkins</p>
                             <p className="text-sm text-text-main/50">Senior Broker at Peak Realty</p>
@@ -1267,7 +1264,7 @@ function App() {
                           "The virtual staging is indistinguishable from the real thing. It helps buyers visualize the home without the $5,000 staging cost."
                         </p>
                         <div className="flex items-center gap-4">
-                          <img className="w-12 h-12 rounded-full object-cover" data-alt="Portrait of a male real estate agent" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhivQamUlpH6-i60zjOY6IuikUEftAtfAraoaE1QW5cZsGIXgIwJrkgMnWzwjfAV9acx6E-Sf-2V_D7IJ4nbj3qE--EFa0mojxJhZGb04uZoYCD6Vl5U2DJ0P29ptzL-aO_UZWoB6YhX2Y0XiT0IIY8RSpGHUYbLxvGZCJXEC4gvOJ9-OgHZMBWTM6sMU2KoZNnIaVvxSFDdlTt9oY-Uyc9L2Ymn13dKoAlUIEFZx89FPiOW7V8OhDGlVRGdcIoIJGNquz1GRBzeI" />
+                          <img className="w-12 h-12 rounded-full object-cover" alt="Portrait of a male real estate agent" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhivQamUlpH6-i60zjOY6IuikUEftAtfAraoaE1QW5cZsGIXgIwJrkgMnWzwjfAV9acx6E-Sf-2V_D7IJ4nbj3qE--EFa0mojxJhZGb04uZoYCD6Vl5U2DJ0P29ptzL-aO_UZWoB6YhX2Y0XiT0IIY8RSpGHUYbLxvGZCJXEC4gvOJ9-OgHZMBWTM6sMU2KoZNnIaVvxSFDdlTt9oY-Uyc9L2Ymn13dKoAlUIEFZx89FPiOW7V8OhDGlVRGdcIoIJGNquz1GRBzeI" />
                           <div>
                             <p className="font-bold text-text-main">David Chen</p>
                             <p className="text-sm text-text-main/50">Independent Realtor</p>
@@ -1278,10 +1275,10 @@ function App() {
                   </div>
                   <div className="hidden lg:block">
                     <div className="grid grid-cols-2 gap-4">
-                      <img className="rounded-2xl shadow-lg" data-alt="Modern office building exterior" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSJ9OSa7lYdcjihM8cNwFAckIMVDokABaPwRUcBaG3PE0poj64v-sgw0oOGWcPsSuOhUX2p93bDR3L6kf2CsF73a7wABrPh14-XafLH8yo_KXcPIlrjjTlkjr7O5ZJ5dsOUckOZ0kb84w9GA537uWl4jltqMyY2wt6W9k_mHituZ16GJS9mh5LIGzaXkGNrHXGc0LueeOMNlr6n-BbzpcYbrU0Tur4cgtR_w2X9ohGSz-2NkBVSpDh_mKq1LeU26FIDrgCHSygj_k" />
-                      <img className="rounded-2xl shadow-lg mt-12" data-alt="Glass skyscrapers architecture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLNqNGIfuOOYfY8hwARslwqq-DBEFDkTLm6CtHbpDtMWvSmnVJ-ANMI4jSbX2KkiJmvYGDmn8P0GAKHdIzVjQkmgEhOTJEEbE53wGxkMsV21Qjw7qN9KxVPO-XYgfhNk8B4yYQlPl19uAchh74DvxhvIpzpNARrZSvVOzt9Q1RL7_a8_kqYxXoKNhDBoVVXIvjtQbfreEa1jsmYtPWVKoT1fA06Wxr_7EwQcFTm-sP4yTVULnmSuBrVc0K3hr212saxtIpU_Rvp6w" />
-                      <img className="rounded-2xl shadow-lg -mt-12" data-alt="Luxury residential property facade" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwuxW4hJTmM2291eX2gTWz3Kat6utwkzmUgD8mqtZq_Cleo5zHAkL_NtdugVKxcBqFnojcY03LU2aF19xNPMoC15De9o3YiHswm-ye15Q6GbKdF7WclMeTp53D-dzXQKAnJLzcX8XJFqb7Y4Hnt2QIm5pW8LqcebU-D2SkeudJ5eWWj39hS-Iu_ag8QIsNTbcwpALog_oMslz_Jtd8fZjeLAg7qlC_JPkoMdciMwqJ2ILYvuOLG5y5HyiJz3Y_ncGqZ-zRRpshQbc" />
-                      <img className="rounded-2xl shadow-lg" data-alt="Stunning pool and backyard area" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD034dYyl2Z-exo4lHXCjDc7iBfYFenqiMfFrPNxYWXt9XEXijfia0f9NAIOTEYwrqgCeM66VyI5XlSCgpycZLBsb9aE8Cf6Exqks-JWEgaY5NSz7UT8cvppbn6iGBsi0FmcL1OqEae0eLIWrKzVgi9JJPYp922lDd_SKCig-EC6YEo6DAXiwmyQYt_Bz8Q0WbyHMZZc3lQQ3tP7YdnisjLR4aqcWc_nsCJkLrQehwbv-Qwi5IW3J54qjv5vWpcD0Dks2lDrh-XlDY" />
+                      <img className="rounded-2xl shadow-lg" alt="Modern office building exterior" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSJ9OSa7lYdcjihM8cNwFAckIMVDokABaPwRUcBaG3PE0poj64v-sgw0oOGWcPsSuOhUX2p93bDR3L6kf2CsF73a7wABrPh14-XafLH8yo_KXcPIlrjjTlkjr7O5ZJ5dsOUckOZ0kb84w9GA537uWl4jltqMyY2wt6W9k_mHituZ16GJS9mh5LIGzaXkGNrHXGc0LueeOMNlr6n-BbzpcYbrU0Tur4cgtR_w2X9ohGSz-2NkBVSpDh_mKq1LeU26FIDrgCHSygj_k" />
+                      <img className="rounded-2xl shadow-lg mt-12" alt="Glass skyscrapers architecture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLNqNGIfuOOYfY8hwARslwqq-DBEFDkTLm6CtHbpDtMWvSmnVJ-ANMI4jSbX2KkiJmvYGDmn8P0GAKHdIzVjQkmgEhOTJEEbE53wGxkMsV21Qjw7qN9KxVPO-XYgfhNk8B4yYQlPl19uAchh74DvxhvIpzpNARrZSvVOzt9Q1RL7_a8_kqYxXoKNhDBoVVXIvjtQbfreEa1jsmYtPWVKoT1fA06Wxr_7EwQcFTm-sP4yTVULnmSuBrVc0K3hr212saxtIpU_Rvp6w" />
+                      <img className="rounded-2xl shadow-lg -mt-12" alt="Luxury residential property facade" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwuxW4hJTmM2291eX2gTWz3Kat6utwkzmUgD8mqtZq_Cleo5zHAkL_NtdugVKxcBqFnojcY03LU2aF19xNPMoC15De9o3YiHswm-ye15Q6GbKdF7WclMeTp53D-dzXQKAnJLzcX8XJFqb7Y4Hnt2QIm5pW8LqcebU-D2SkeudJ5eWWj39hS-Iu_ag8QIsNTbcwpALog_oMslz_Jtd8fZjeLAg7qlC_JPkoMdciMwqJ2ILYvuOLG5y5HyiJz3Y_ncGqZ-zRRpshQbc" />
+                      <img className="rounded-2xl shadow-lg" alt="Stunning pool and backyard area" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD034dYyl2Z-exo4lHXCjDc7iBfYFenqiMfFrPNxYWXt9XEXijfia0f9NAIOTEYwrqgCeM66VyI5XlSCgpycZLBsb9aE8Cf6Exqks-JWEgaY5NSz7UT8cvppbn6iGBsi0FmcL1OqEae0eLIWrKzVgi9JJPYp922lDd_SKCig-EC6YEo6DAXiwmyQYt_Bz8Q0WbyHMZZc3lQQ3tP7YdnisjLR4aqcWc_nsCJkLrQehwbv-Qwi5IW3J54qjv5vWpcD0Dks2lDrh-XlDY" />
                     </div>
                   </div>
                 </div>
@@ -1533,9 +1530,9 @@ function App() {
           <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/30">
             <p>© 2024 Estator AI. All rights reserved.</p>
             <div className="flex gap-8">
-              <a className="hover:text-white" href="#">Terms of Service</a>
-              <a className="hover:text-white" href="#">Cookie Policy</a>
-              <a className="hover:text-white" href="#">Security</a>
+                <a href="/" className="hover:text-white">Terms of Service</a>
+                <a href="/" className="hover:text-white">Cookie Policy</a>
+                <a href="/" className="hover:text-white">Security</a>
             </div>
           </div>
         </div>
