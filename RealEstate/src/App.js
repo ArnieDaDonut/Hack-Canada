@@ -38,6 +38,23 @@ const cleanDescription = (text) => {
   return text.replace(/\*+\s*SAMPLE DATA\s*\*+/g, '').trim();
 };
 
+const SAMPLE_LISTINGS = [
+  {
+    "mlsNumber": "MRD10721637",
+    "listPrice": 92000,
+    "address": { "streetNumber": "6812", "streetName": "Hermitage", "city": "Chicago", "state": "IL" },
+    "map": { "latitude": 41.769856, "longitude": -87.6678205 },
+    "images": ["sample/IMG-MRD10721637_3.jpg", "sample/IMG-MRD10721637_5.jpg"],
+    "details": {
+      "description": "**** SAMPLE DATA **** Amazing opportunity to own a two unit building at an affordable price. Rent out one unit and live RENT FREE! **** SAMPLE DATA ****",
+      "numBathrooms": 2,
+      "numBedrooms": 5,
+      "propertyType": "Residential Income",
+      "style": "Other"
+    }
+  }
+];
+
 function App() {
   const [config, setConfig] = useState({
     cloudName: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME || localStorage.getItem('estate_cloud_name') || '',
@@ -148,17 +165,31 @@ function App() {
   const loadChicagoListings = async () => {
     if (chicagoListings.length > 0) return;
     setLoadingMap(true);
+    
+    // Check if API key exists
+    const apiKey = process.env.REACT_APP_REPLIERS_API_KEY;
+    if (!apiKey) {
+      console.warn('Repliers API Key missing. Using sample fallback data.');
+      setChicagoListings(SAMPLE_LISTINGS);
+      setLoadingMap(false);
+      return;
+    }
+
     try {
       const res = await fetch('https://api.repliers.io/listings?city=Chicago&resultsPerPage=40', {
         headers: {
-          'REPLIERS-API-KEY': process.env.REACT_APP_REPLIERS_API_KEY
+          'REPLIERS-API-KEY': apiKey
         }
       });
+      
+      if (!res.ok) throw new Error(`API returned ${res.status}`);
+      
       const data = await res.json();
-      setChicagoListings(data.listings || []);
+      setChicagoListings(data.listings && data.listings.length > 0 ? data.listings : SAMPLE_LISTINGS);
     } catch (err) {
-      console.error(err);
-      alert('Failed to load listings from Repliers API');
+      console.error('Repliers API Error:', err);
+      // Fallback to sample data instead of just showing an alert
+      setChicagoListings(SAMPLE_LISTINGS);
     } finally {
       setLoadingMap(false);
     }
